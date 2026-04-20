@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest *)",
+      "Bash(npm run *)",
+      "Bash(pkill *)",
+      "Bash(python3 *)",
+      "Bash(npm install *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Next.js 마이그레이션: 기본 섹션 및 컴포넌트 구현 *)",
+      "Bash(sed -i \"\" \"s/padding: '64px 32px 48px'/padding: '40px 20px 32px'/g\" components/sections/Greeting.tsx)",
+      "Bash(sed -i \"\" \"s/padding: '64px 32px'/padding: '40px 20px'/g\" components/sections/Family.tsx)"
+    ]
+  }
+}
