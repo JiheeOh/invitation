@@ -1,20 +1,34 @@
 'use client';
 
-import React from 'react';
-import { useFadeIn } from '@/lib/hooks';
+import React, { ReactNode, useRef, useEffect, useState } from 'react';
 
 interface FadeInProps {
-  children: React.ReactNode;
+  children: ReactNode;
   delay?: number;
-  style?: React.CSSProperties;
 }
 
-export default function FadeIn({
-  children,
-  delay = 0,
-  style = {},
-}: FadeInProps) {
-  const { ref, visible } = useFadeIn(delay);
+export default function FadeIn({ children, delay = 0 }: FadeInProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const scrollRoot = el.closest('[data-scroll-root]');
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setTimeout(() => setVisible(true), delay);
+          obs.disconnect();
+        }
+      },
+      { root: scrollRoot, threshold: 0.15 }
+    );
+    obs.observe(el);
+
+    return () => obs.disconnect();
+  }, [delay]);
 
   return (
     <div
@@ -22,9 +36,7 @@ export default function FadeIn({
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(18px)',
-        transition:
-          'opacity 900ms cubic-bezier(.2,.7,.2,1), transform 900ms cubic-bezier(.2,.7,.2,1)',
-        ...style,
+        transition: 'opacity 900ms cubic-bezier(.2,.7,.2,1), transform 900ms cubic-bezier(.2,.7,.2,1)',
       }}
     >
       {children}

@@ -1,16 +1,4 @@
-export function copyToClipboard(text: string): Promise<void> {
-  return navigator.clipboard.writeText(text.replace(/[^\d\-]/g, ''));
-}
-
-export function padStart(value: number, length: number = 2): string {
-  return String(value).padStart(length, '0');
-}
-
-export function mergeBg(color: string, opacity: number = 0.13): string {
-  return color + Math.round(opacity * 255).toString(16).padStart(2, '0');
-}
-
-export type Theme = {
+export interface Theme {
   name: string;
   bg: string;
   paper: string;
@@ -23,11 +11,37 @@ export type Theme = {
   serif: string;
   sans: string;
   script: string;
-};
+}
 
-export type FontSet = {
+export interface FontSet {
   name: string;
   serif: string;
   sans: string;
   script: string;
-};
+}
+
+export function copyToClipboard(text: string): Promise<void> {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
+  } else {
+    return new Promise((resolve, reject) => {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      try {
+        document.execCommand('copy');
+        resolve();
+      } catch (error) {
+        reject(error);
+      } finally {
+        document.body.removeChild(textArea);
+      }
+    });
+  }
+}
+
+export function padStart(str: string | number, targetLength: number, padString: string = '0'): string {
+  return String(str).padStart(targetLength, padString);
+}

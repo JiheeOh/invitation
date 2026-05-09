@@ -1,60 +1,57 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { THEMES, FONT_SETS } from '@/lib/wedding-data';
-import type { Theme, FontSet } from '@/lib/utils';
+import React, { useState } from 'react';
+import type { Theme } from '@/lib/utils';
 import Cover from './sections/Cover';
 import Greeting from './sections/Greeting';
 import Family from './sections/Family';
 import CalendarSection from './sections/CalendarSection';
 import Gallery from './sections/Gallery';
+import Interview from './sections/Interview';
 import Location from './sections/Location';
 import Accounts from './sections/Accounts';
+import Share from './sections/Share';
+import Slideshow from './Slideshow';
 import PetalShower from './PetalShower';
+import MusicToggle from './MusicToggle';
 
 interface InvitationProps {
-  mood?: 'A' | 'B';
+  t: Theme;
+  petals?: boolean;
 }
 
-export default function Invitation({ mood = 'A' }: InvitationProps) {
-  const config = {
-    theme: 'lavender',
-    font: 'modern',
-    petals: true,
-  };
-
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
-  const baseTheme = THEMES[config.theme as keyof typeof THEMES] || THEMES.lavender;
-  const fontSet = FONT_SETS[config.font as keyof typeof FONT_SETS] || FONT_SETS.classic;
-  const theme: Theme = { ...baseTheme, ...fontSet };
+export default function Invitation({ t, petals = true }: InvitationProps) {
+  const [slideshow, setSlideshow] = useState(false);
 
   return (
     <div
+      data-scroll-root
       style={{
-        width: '100vw',
-        height: '100vh',
+        width: '100%',
+        height: '100%',
         overflowY: 'auto',
         overflowX: 'hidden',
-        background: '#fff',
-        maxWidth: '100%',
+        background: t.bg,
+        color: t.ink,
+        fontFamily: t.sans,
+        position: 'relative',
+        scrollbarWidth: 'thin',
       }}
     >
-      <PetalShower enabled={config.petals} />
+      {petals && <PetalShower count={16} />}
+      <MusicToggle t={t} />
 
-      <Cover t={theme} mood={mood} />
-      <Greeting t={theme} />
-      <Family t={theme} />
-      <CalendarSection t={theme} />
-      <Gallery t={theme} />
-      <Location t={theme} />
-      <Accounts t={theme} />
+      <Cover t={t} />
+      <Greeting t={t} />
+      <Family t={t} />
+      <CalendarSection t={t} />
+      <Gallery t={t} onOpenSlideshow={() => setSlideshow(true)} />
+      <Interview t={t} />
+      <Location t={t} />
+      <Accounts t={t} />
+      <Share t={t} />
+
+      {slideshow && <Slideshow t={t} onClose={() => setSlideshow(false)} />}
     </div>
   );
 }

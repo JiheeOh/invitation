@@ -1,44 +1,64 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-export function useCountdown(iso: string) {
-  const [now, setNow] = useState(() => new Date());
-
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-
-  const target = new Date(iso);
-  const diff = Math.max(0, target.getTime() - now.getTime());
-  const days = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff % 86400000) / 3600000);
-  const mins = Math.floor((diff % 3600000) / 60000);
-  const secs = Math.floor((diff % 60000) / 1000);
-
-  return { days, hours, mins, secs, done: diff === 0 };
-}
-
-export function useFadeIn(delay = 0) {
+export function useFadeIn(delay: number = 0) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const timeout = setTimeout(() => {
+      if (ref.current) {
+        const observer = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+        observer.observe(ref.current);
+      }
+    }, delay);
 
-    const observer = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setTimeout(() => setVisible(true), delay);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
+    return () => clearTimeout(timeout);
   }, [delay]);
 
   return { ref, visible };
+}
+
+export function useCountdown(targetDate: string) {
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [mins, setMins] = useState(0);
+  const [secs, setSecs] = useState(0);
+
+  useEffect(() => {
+    const calculateTime = () => {
+      const target = new Date(targetDate).getTime();
+      const now = new Date().getTime();
+      const difference = target - now;
+
+      if (difference <= 0) {
+        setDays(0);
+        setHours(0);
+        setMins(0);
+        setSecs(0);
+        return;
+      }
+
+      const daysLeft = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hoursLeft = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutesLeft = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsLeft = Math.floor((difference % (1000 * 60)) / 1000);
+
+      setDays(daysLeft);
+      setHours(hoursLeft);
+      setMins(minutesLeft);
+      setSecs(secondsLeft);
+    };
+
+    calculateTime();
+    const interval = setInterval(calculateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, [targetDate]);
+
+  return { days, hours, mins, secs };
 }

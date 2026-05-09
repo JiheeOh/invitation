@@ -18,7 +18,7 @@ export default function SectionLabel({ t, eng, ko }: SectionLabelProps) {
           letterSpacing: 5,
           textTransform: 'uppercase',
           fontWeight: 500,
-          marginBottom: 8,
+          marginBottom: 10,
         }}
       >
         {eng}
@@ -26,9 +26,9 @@ export default function SectionLabel({ t, eng, ko }: SectionLabelProps) {
       <div
         style={{
           fontFamily: t.serif,
-          fontSize: 18,
+          fontSize: 15,
+          letterSpacing: 3,
           color: t.ink,
-          letterSpacing: 1,
           fontWeight: 400,
         }}
       >

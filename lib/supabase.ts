@@ -1,13 +1,23 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+let supabase;
+try {
+  if (supabaseUrl && supabaseAnonKey) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  }
+} catch (error) {
+  console.warn('Supabase initialization failed:', error);
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const getSupabase = () => supabase;
+
+export function getStorageUrl(bucket: string, path: string): string {
+  if (!supabaseUrl) return '';
+  return `${supabaseUrl}/storage/v1/object/public/${bucket}/${path}`;
+}
 
 // Types for database
 export interface WeddingInvitation {
