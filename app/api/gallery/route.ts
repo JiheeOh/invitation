@@ -21,8 +21,8 @@ export async function GET() {
     }
 
     const photos = (data || [])
-      .filter((file) => file.name && /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name))
-      .map((file) => {
+      .filter((file: { name: string }) => file.name && /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name))
+      .map((file: { name: string }) => {
         const {
           data: { publicUrl },
         } = supabase.storage.from(WEDDING.storage.galleryBucket).getPublicUrl(file.name);
