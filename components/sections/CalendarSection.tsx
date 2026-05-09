@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
 import { useCountdown } from '@/lib/hooks';
@@ -15,22 +15,47 @@ interface CalendarSectionProps {
 export default function CalendarSection({ t }: CalendarSectionProps) {
   const { days, hours, mins, secs } = useCountdown(WEDDING.dateISO);
 
-  const rows = [
-    [null, null, null, null, null, null, 1],
-    [2, 3, 4, 5, 6, 7, 8],
-    [9, 10, 11, 12, 13, 14, 15],
-    [16, 17, 18, 19, 20, 21, 22],
-    [23, 24, 25, 26, 27, 28, 29],
-    [30, 31, null, null, null, null, null],
-  ];
+  // Auto-calculate calendar from dateISO
+  const { rows, monthLabel, targetDay } = useMemo(() => {
+    const d = new Date(WEDDING.dateISO);
+    const year = d.getFullYear();
+    const month = d.getMonth();
+    const tDay = d.getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
+    ];
+
+    const grid: (number | null)[] = [];
+    for (let i = 0; i < firstDay; i++) {
+      grid.push(null);
+    }
+    for (let i = 1; i <= daysInMonth; i++) {
+      grid.push(i);
+    }
+
+    const rows = [];
+    for (let i = 0; i < grid.length; i += 7) {
+      rows.push(grid.slice(i, i + 7));
+    }
+
+    return {
+      rows,
+      monthLabel: `${monthNames[month]} ${year}`,
+      targetDay: tDay,
+    };
+  }, []);
 
   const Cell = ({ n }: { n: number | null }) => {
     if (!n) return <div />;
 
     const flat = rows.flat();
-    const isSat = flat.indexOf(n) % 7 === 6;
-    const isSun = flat.indexOf(n) % 7 === 0;
-    const target = n === 29;
+    const index = flat.indexOf(n);
+    const isSun = index % 7 === 0;
+    const target = n === targetDay;
 
     return (
       <div
@@ -54,7 +79,7 @@ export default function CalendarSection({ t }: CalendarSectionProps) {
 
   return (
     <section
-      style={{ padding: '48px 20px', background: '#fff', color: t.ink }}
+      style={{ padding: '72px 32px', background: '#fff', color: t.ink }}
     >
       <FadeIn>
         <SectionLabel t={t} eng="the day" ko="날짜" />
@@ -68,7 +93,7 @@ export default function CalendarSection({ t }: CalendarSectionProps) {
             color: t.accent,
           }}
         >
-          August 2026
+          {monthLabel}
         </div>
 
         <div
@@ -119,7 +144,7 @@ export default function CalendarSection({ t }: CalendarSectionProps) {
             letterSpacing: 1,
           }}
         >
-          2026년 8월 29일 토요일 · 오후 2시 20분
+          {WEDDING.dateLabel} · {WEDDING.timeLabel}
         </div>
 
         <div
@@ -173,7 +198,7 @@ export default function CalendarSection({ t }: CalendarSectionProps) {
             color: t.accent,
           }}
         >
-          재 &amp; 지희의 결혼식이 {days}일 남았습니다
+          {WEDDING.groom.name}재 & {WEDDING.bride.name}의 결혼식이 {days}일 남았습니다
         </div>
       </FadeIn>
     </section>

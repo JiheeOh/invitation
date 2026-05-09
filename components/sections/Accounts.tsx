@@ -11,98 +11,99 @@ interface AccountsProps {
   t: Theme;
 }
 
-export default function Accounts({ t }: AccountsProps) {
-  const [open, setOpen] = useState<string | null>(null);
+interface GroupProps {
+  id: string;
+  title: string;
+  items: Array<{ who: string; bank: string; num: string }>;
+  open: string | null;
+  setOpen: (id: string | null) => void;
+  t: Theme;
+}
 
-  const Group = ({
-    id,
-    title,
-    items,
-  }: {
-    id: string;
-    title: string;
-    items: Array<{ who: string; bank: string; num: string }>;
-  }) => {
-    const isOpen = open === id;
+const Group = ({ id, title, items, open, setOpen, t }: GroupProps) => {
+  const isOpen = open === id;
 
-    return (
-      <div
+  return (
+    <div
+      style={{
+        border: `1px solid ${t.line}`,
+        borderRadius: 4,
+        overflow: 'hidden',
+        marginBottom: 10,
+        background: t.paper,
+      }}
+    >
+      <button
+        onClick={() => setOpen(isOpen ? null : id)}
         style={{
-          border: `1px solid ${t.line}`,
-          borderRadius: 4,
-          overflow: 'hidden',
-          marginBottom: 10,
-          background: t.paper,
+          width: '100%',
+          padding: '14px 16px',
+          background: isOpen ? t.accentSoft : 'transparent',
+          border: 'none',
+          textAlign: 'left',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontFamily: t.serif,
+          fontSize: 14,
+          color: t.ink,
+          fontWeight: 500,
         }}
       >
-        <button
-          onClick={() => setOpen(isOpen ? null : id)}
+        {title}
+        <span
           style={{
-            width: '100%',
-            padding: '14px 16px',
-            background: isOpen ? t.accentSoft : 'transparent',
-            border: 'none',
-            textAlign: 'left',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontFamily: t.serif,
-            fontSize: 14,
-            color: t.ink,
-            fontWeight: 500,
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform .2s',
+            display: 'inline-block',
           }}
         >
-          {title}
-          <span
-            style={{
-              transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform .2s',
-              display: 'inline-block',
-            }}
-          >
-            ▼
-          </span>
-        </button>
+          ▼
+        </span>
+      </button>
 
-        {isOpen && (
-          <div style={{ padding: '12px 16px 16px', borderTop: `1px solid ${t.line}` }}>
-            {items.map((item, i) => (
-              <div key={i} style={{ marginBottom: i < items.length - 1 ? 12 : 0 }}>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: t.muted,
-                    marginBottom: 4,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {item.who}
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div style={{ fontSize: 13, color: t.ink, fontFamily: t.sans }}>
-                    {item.bank} {item.num}
-                  </div>
-                  <CopyBtn text={item.num} label="복사" theme={t} />
-                </div>
+      {isOpen && (
+        <div style={{ padding: '12px 16px 16px', borderTop: `1px solid ${t.line}` }}>
+          {items.map((item, i) => (
+            <div key={i} style={{ marginBottom: i < items.length - 1 ? 12 : 0 }}>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: t.muted,
+                  marginBottom: 4,
+                  lineHeight: 1.4,
+                }}
+              >
+                {item.who}
               </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div style={{ fontSize: 13, fontFamily: t.serif, color: t.ink }}>
+                  {item.bank} {item.num}
+                </div>
+                <CopyBtn text={item.num} label="복사" theme={t} />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default function Accounts({ t }: AccountsProps) {
+  const [open, setOpen] = useState<string | null>(null);
 
   return (
     <section
       style={{
-        padding: '48px 20px',
+        padding: '72px 32px',
         background: '#fff',
         color: t.ink,
       }}
@@ -115,11 +116,17 @@ export default function Accounts({ t }: AccountsProps) {
             id="groom"
             title={`신랑 ${WEDDING.groom.name}`}
             items={WEDDING.accounts.groom}
+            open={open}
+            setOpen={setOpen}
+            t={t}
           />
           <Group
             id="bride"
             title={`신부 ${WEDDING.bride.name}`}
             items={WEDDING.accounts.bride}
+            open={open}
+            setOpen={setOpen}
+            t={t}
           />
         </div>
 

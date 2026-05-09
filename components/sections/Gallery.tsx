@@ -7,9 +7,10 @@ import type { Theme } from '@/lib/utils';
 
 interface GalleryProps {
   t: Theme;
+  onOpenSlideshow?: () => void;
 }
 
-export default function Gallery({ t }: GalleryProps) {
+export default function Gallery({ t, onOpenSlideshow }: GalleryProps) {
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,7 +80,7 @@ export default function Gallery({ t }: GalleryProps) {
   } as React.CSSProperties;
 
   return (
-    <section style={{ padding: '48px 20px', background: '#fff', color: t.ink }}>
+    <section style={{ padding: '72px 32px', background: '#fff', color: t.ink }}>
       <FadeIn>
         <SectionLabel t={t} eng="gallery" ko="우리의 순간" />
 
@@ -133,7 +134,10 @@ export default function Gallery({ t }: GalleryProps) {
             {photos.length > 0 && (
               <div style={{ textAlign: 'center', marginTop: 24 }}>
                 <button
-                  onClick={() => setLightbox(0)}
+                  onClick={() => {
+                    setLightbox(0);
+                    onOpenSlideshow?.();
+                  }}
                   style={{
                     fontFamily: t.script,
                     fontSize: 16,

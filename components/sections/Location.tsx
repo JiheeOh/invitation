@@ -8,17 +8,19 @@ interface LocationProps {
   t: Theme;
 }
 
+interface TransportRowProps {
+  t: Theme;
+  icon: 'subway' | 'bus' | 'car';
+  title: string;
+  lines: string[];
+}
+
 const TransportRow = ({
   t,
   icon,
   title,
   lines,
-}: {
-  t: Theme;
-  icon: 'subway' | 'bus' | 'car';
-  title: string;
-  lines: string[];
-}) => {
+}: TransportRowProps) => {
   const icons: Record<string, string> = {
     subway: '<path d="M5 3h14a2 2 0 012 2v10a2 2 0 01-2 2h-3l2 3h-2l-2-3H8l-2 3H4l2-3H5a2 2 0 01-2-2V5a2 2 0 012-2zm2 3v6h10V6H7z"/>',
     bus: '<path d="M6 2h12a2 2 0 012 2v13a2 2 0 01-1 1.7V21h-2v-2H7v2H5v-2.3A2 2 0 014 17V4a2 2 0 012-2zm1 4v7h10V6H7zm1 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm8 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>',
@@ -80,7 +82,7 @@ export default function Location({ t }: LocationProps) {
   return (
     <section
       style={{
-        padding: '48px 20px',
+        padding: '72px 32px',
         background: '#fff',
         color: t.ink,
       }}
@@ -228,24 +230,9 @@ export default function Location({ t }: LocationProps) {
             gap: 16,
           }}
         >
-          <TransportRow
-            t={t}
-            icon="subway"
-            title="지하철"
-            lines={['2호선 · 분당선 선릉역 5번 출구', '도보 6분']}
-          />
-          <TransportRow
-            t={t}
-            icon="bus"
-            title="버스"
-            lines={['간선 146, 341 · 지선 3412', '선릉역.한국학원 하차']}
-          />
-          <TransportRow
-            t={t}
-            icon="car"
-            title="자가용"
-            lines={['내비게이션 "더 링크 호텔"', '호텔 주차장 3시간 무료']}
-          />
+          {WEDDING.location.transport.map((transport, i) => (
+            <TransportRow key={i} t={t} icon={transport.icon} title={transport.title} lines={transport.lines} />
+          ))}
         </div>
       </FadeIn>
     </section>
