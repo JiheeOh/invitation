@@ -11,7 +11,7 @@ interface CoverProps {
   mood?: 'A' | 'B';
 }
 
-export default function Cover({ t, mood = 'A' }: CoverProps) {
+export default function Cover({ t }: CoverProps) {
   return (
     <section
       style={{
