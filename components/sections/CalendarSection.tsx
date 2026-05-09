@@ -178,7 +178,7 @@ export default function CalendarSection({ t }: CalendarSectionProps) {
                                     fontVariantNumeric: 'tabular-nums',
                                 }}
                             >
-                                {padStart(v as number)}
+                                {padStart(v as number, 2)}
                             </div>
                             <div
                                 style={{

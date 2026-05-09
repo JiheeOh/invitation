@@ -14,7 +14,7 @@ interface AccountsProps {
 interface GroupProps {
   id: string;
   title: string;
-  items: Array<{ who: string; bank: string; num: string }>;
+  items: readonly { who: string; bank: string; num: string }[];
   open: string | null;
   setOpen: (id: string | null) => void;
   t: Theme;

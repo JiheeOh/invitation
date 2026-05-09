@@ -12,7 +12,7 @@ interface TransportRowProps {
   t: Theme;
   icon: 'subway' | 'bus' | 'car';
   title: string;
-  lines: string[];
+  lines: readonly string[];
 }
 
 const TransportRow = ({

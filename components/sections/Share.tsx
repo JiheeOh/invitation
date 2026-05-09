@@ -13,15 +13,24 @@ interface KakaoConfig {
   content: {
     title: string;
     description: string;
-    imageUrl: string;
+    imageUrl?: string;
     link: {
       webUrl: string;
+      mobileWebUrl?: string;
     };
   };
+  buttons?: Array<{
+    title: string;
+    link: {
+      webUrl: string;
+      mobileWebUrl?: string;
+    };
+  }>;
 }
 
 interface KakaoWindow extends Window {
   Kakao?: {
+    init: (appKey: string) => void;
     Share: {
       sendDefault: (config: KakaoConfig) => void;
     };

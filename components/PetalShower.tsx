@@ -2,6 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 
+interface PetalItem {
+  kind: 'flower' | 'petal';
+  petalShape: 0 | 1;
+  left: number;
+  delay: number;
+  dur: number;
+  size: number;
+  sway: number;
+  swayDir: 1 | -1;
+  rot: number;
+  spin: number;
+  opacity: number;
+  color: string;
+}
+
 interface PetalShowerProps {
   enabled?: boolean;
   count?: number;
@@ -20,13 +35,13 @@ export default function PetalShower({ enabled = true, count = 26 }: PetalShowerP
       const isFlower = kind === 'flower';
       return {
         kind: kind as 'flower' | 'petal',
-        petalShape: Math.random() < 0.5 ? 0 : 1,
+        petalShape: (Math.random() < 0.5 ? 0 : 1) as 0 | 1,
         left: Math.random() * 100,
         delay: -Math.random() * 18,
         dur: 13 + Math.random() * 14,
         size: isFlower ? 18 + Math.random() * 16 : 9 + Math.random() * 9,
         sway: 40 + Math.random() * 90,
-        swayDir: Math.random() < 0.5 ? 1 : -1,
+        swayDir: (Math.random() < 0.5 ? 1 : -1) as 1 | -1,
         rot: Math.random() * 360,
         spin: (Math.random() < 0.5 ? 1 : -1) * (240 + Math.random() * 360),
         opacity: 0.6 + Math.random() * 0.35,
