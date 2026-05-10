@@ -1,26 +1,26 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Location from './Location';
 import { THEMES } from '@/lib/config/themes';
 import { WEDDING } from '@/lib/wedding-data';
 
-vi.mock('next/dynamic', () => ({
-  default: (_fn: any) =>
-    ({ lat, lng }: { lat: number; lng: number }) => (
-      <div data-testid="map-view" data-lat={lat} data-lng={lng} />
-    ),
-}));
-
 const theme = Object.values(THEMES)[0];
 
 describe('Location 컴포넌트', () => {
-  describe('지도 렌더링', () => {
-    it('MapView가 올바른 좌표로 렌더링되어야 함', () => {
+  describe('구글 지도 iframe', () => {
+    it('iframe이 렌더링되어야 함', () => {
       render(<Location t={theme} />);
-      const map = screen.getByTestId('map-view');
-      expect(map).toBeInTheDocument();
-      expect(map.getAttribute('data-lat')).toBe(String(WEDDING.location.lat));
-      expect(map.getAttribute('data-lng')).toBe(String(WEDDING.location.lng));
+      const iframe = screen.getByTitle('웨딩홀 위치');
+      expect(iframe).toBeInTheDocument();
+    });
+
+    it('iframe src에 정확한 좌표가 포함되어야 함', () => {
+      render(<Location t={theme} />);
+      const iframe = screen.getByTitle('웨딩홀 위치');
+      const src = iframe.getAttribute('src') ?? '';
+      expect(src).toContain(String(WEDDING.location.lat));
+      expect(src).toContain(String(WEDDING.location.lng));
+      expect(src).toContain('maps.google.com');
     });
   });
 
@@ -47,11 +47,12 @@ describe('Location 컴포넌트', () => {
       expect(kakaoLink).toHaveAttribute('href', expect.stringContaining(encodeURIComponent(WEDDING.address)));
     });
 
-    it('T map 링크가 주소 검색 딥링크(tmap://) 형식이어야 함', () => {
+    it('T map 링크가 route 딥링크(tmap://) 형식이어야 함', () => {
       render(<Location t={theme} />);
       const tmapLink = screen.getByRole('link', { name: 'T map' });
-      expect(tmapLink).toHaveAttribute('href', expect.stringContaining('tmap://'));
-      expect(tmapLink).toHaveAttribute('href', expect.stringContaining(encodeURIComponent(WEDDING.address)));
+      expect(tmapLink).toHaveAttribute('href', expect.stringContaining('tmap://route'));
+      expect(tmapLink).toHaveAttribute('href', expect.stringContaining(String(WEDDING.location.lat)));
+      expect(tmapLink).toHaveAttribute('href', expect.stringContaining(String(WEDDING.location.lng)));
     });
   });
 

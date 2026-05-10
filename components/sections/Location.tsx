@@ -1,6 +1,3 @@
-'use client';
-
-import dynamic from 'next/dynamic';
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
 import { WEDDING } from '@/lib/wedding-data';
@@ -16,11 +13,6 @@ interface TransportRowProps {
   title: string;
   lines: readonly string[];
 }
-
-const MapView = dynamic(() => import('@/components/MapView'), {
-  ssr: false,
-  loading: () => <div style={{ width: '100%', height: '100%', background: '#f4f4f4' }} />,
-});
 
 const TransportRow = ({
   t,
@@ -100,7 +92,7 @@ export default function Location({ t }: LocationProps) {
     },
     {
       name: 'T map',
-      url: `tmap://search?name=${address}`,
+      url: `tmap://route?goalname=${address}&goalx=${lng}&goaly=${lat}&goalrad=2000`,
     },
   ];
 
@@ -150,13 +142,21 @@ export default function Location({ t }: LocationProps) {
         <div
           style={{
             marginTop: 20,
-            height: 180,
+            height: 220,
             borderRadius: 6,
             overflow: 'hidden',
             border: `1px solid ${t.line}`,
           }}
         >
-          <MapView lat={lat} lng={lng} accentColor={t.accent} />
+          <iframe
+            src={`https://maps.google.com/maps?q=${lat},${lng}&t=&z=17&ie=UTF8&iwloc=&output=embed`}
+            width="100%"
+            height="100%"
+            style={{ border: 0, display: 'block' }}
+            loading="lazy"
+            allowFullScreen
+            title="웨딩홀 위치"
+          />
         </div>
 
         <div
