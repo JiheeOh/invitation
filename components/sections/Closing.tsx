@@ -20,7 +20,7 @@ export default function Closing({ t }: ClosingProps) {
   return (
     <section style={{ padding: '40px 0 0', background: '#fff', color: t.ink }}>
       <FadeIn>
-        <div style={{ position: 'relative', aspectRatio: '3/4' }}>
+        <div style={{ position: 'relative', height: 'min(720px, calc(100dvh - 80px))' }}>
           {closingUrl && (
             <Image
               src={closingUrl}
