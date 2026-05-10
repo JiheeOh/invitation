@@ -36,8 +36,8 @@ export default function FadeIn({ children, delay = 0 }: FadeInProps) {
       ref={ref}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(18px)',
-        transition: 'opacity 900ms cubic-bezier(.2,.7,.2,1), transform 900ms cubic-bezier(.2,.7,.2,1)',
+        transform: visible ? 'translateY(0)' : 'translateY(36px)',
+        transition: 'opacity 700ms cubic-bezier(.2,.7,.2,1), transform 900ms cubic-bezier(.34,1.56,.4,1)',
       }}
     >
       {children}

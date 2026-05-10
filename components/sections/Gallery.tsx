@@ -1,20 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
 import type { Theme } from '@/lib/utils';
 
 interface GalleryProps {
   t: Theme;
-  onOpenSlideshow?: () => void;
 }
 
-export default function Gallery({ t, onOpenSlideshow }: GalleryProps) {
+export default function Gallery({ t }: GalleryProps) {
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [imageDimensions, setImageDimensions] = useState<Record<number, { width: number; height: number }>>({});
+  const [visibleCount, setVisibleCount] = useState(9);
 
   useEffect(() => {
     const loadPhotos = async () => {
@@ -32,52 +32,7 @@ export default function Gallery({ t, onOpenSlideshow }: GalleryProps) {
     loadPhotos();
   }, []);
 
-  const handleImageLoad = (index: number, e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.currentTarget;
-    setImageDimensions((prev) => ({
-      ...prev,
-      [index]: { width: img.naturalWidth, height: img.naturalHeight },
-    }));
-  };
-
-  const getImageContainerStyle = () => {
-    if (lightbox === null || !imageDimensions[lightbox]) {
-      return {
-        width: '90%',
-        maxWidth: 1000,
-        aspectRatio: '3/4',
-      };
-    }
-
-    const dims = imageDimensions[lightbox];
-    const aspectRatio = dims.width / dims.height;
-    const maxWidth = 1000;
-    const maxHeight = window.innerHeight * 0.8;
-
-    let width = maxWidth;
-    let height = width / aspectRatio;
-
-    if (height > maxHeight) {
-      height = maxHeight;
-      width = height * aspectRatio;
-    }
-
-    return {
-      width: Math.min(width, maxWidth),
-      height: Math.min(height, maxHeight),
-    };
-  };
-
-  const navBtn = {
-    width: 40,
-    height: 40,
-    borderRadius: 999,
-    background: 'rgba(255,255,255,0.2)',
-    color: '#fff',
-    border: 'none',
-    fontSize: 22,
-    cursor: 'pointer',
-  } as React.CSSProperties;
+  const visiblePhotos = photos.slice(0, visibleCount);
 
   return (
     <section style={{ padding: '72px 32px', background: '#fff', color: t.ink }}>
@@ -102,55 +57,47 @@ export default function Gallery({ t, onOpenSlideshow }: GalleryProps) {
                 gap: 4,
               }}
             >
-              {photos.map((photo, i) => (
-            <div
-              key={i}
-              onClick={() => setLightbox(i)}
-              style={{
-                cursor: 'pointer',
-                position: 'relative',
-                paddingBottom: '100%',
-                backgroundColor: t.accentSoft,
-                borderRadius: 4,
-                overflow: 'hidden',
-              }}
-            >
-              <img
-                src={photo}
-                alt={`Photo ${i + 1}`}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
-          ))}
-            </div>
-
-            {photos.length > 0 && (
-              <div style={{ textAlign: 'center', marginTop: 24 }}>
-                <button
-                  onClick={() => {
-                    setLightbox(0);
-                    onOpenSlideshow?.();
-                  }}
+              {visiblePhotos.map((photo, i) => (
+                <div
+                  key={i}
+                  onClick={() => setLightbox(i)}
                   style={{
-                    fontFamily: t.script,
-                    fontSize: 16,
-                    color: t.accent,
-                    background: 'transparent',
-                    border: 'none',
-                    padding: '8px 20px',
                     cursor: 'pointer',
-                    borderBottom: `1px solid ${t.accent}`,
-                    borderRadius: 0,
+                    position: 'relative',
+                    aspectRatio: '1/1',
+                    backgroundColor: t.accentSoft,
+                    borderRadius: 4,
+                    overflow: 'hidden',
                   }}
                 >
-                  view slideshow ▸
+                  <Image
+                    src={photo}
+                    alt={`Photo ${i + 1}`}
+                    fill
+                    sizes="(max-width: 768px) 33vw, 200px"
+                    style={{
+                      objectFit: 'contain',
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {visibleCount < photos.length && (
+              <div style={{ textAlign: 'center', marginTop: 24 }}>
+                <button
+                  onClick={() => setVisibleCount((c) => c + 9)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: t.serif,
+                    fontSize: 12.5,
+                    color: t.muted,
+                    letterSpacing: 2,
+                  }}
+                >
+                  더보기 ⌄
                 </button>
               </div>
             )}
@@ -164,81 +111,44 @@ export default function Gallery({ t, onOpenSlideshow }: GalleryProps) {
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(40,35,55,0.95)',
+            background: 'rgba(0,0,0,0.92)',
             zIndex: 150,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 20,
+            touchAction: 'none',
+            userSelect: 'none',
           }}
         >
-          <div
+          <Image
+            src={photos[lightbox]}
+            alt={`Photo ${lightbox + 1}`}
+            fill
+            sizes="100vw"
             style={{
-              ...getImageContainerStyle(),
-              position: 'relative',
-              borderRadius: 8,
-              overflow: 'hidden',
-              backgroundColor: '#000',
+              objectFit: 'contain',
+              width: '100%',
+              height: '100%',
             }}
-          >
-            <img
-              src={photos[lightbox]}
-              alt={`Photo ${lightbox + 1}`}
-              onLoad={(e) => handleImageLoad(lightbox, e)}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-              }}
-            />
-          </div>
-
-          <div
+          />
+          <button
+            onClick={() => setLightbox(null)}
             style={{
               position: 'absolute',
-              bottom: 30,
-              left: 0,
-              right: 0,
-              textAlign: 'center',
+              top: 16,
+              right: 16,
+              width: 36,
+              height: 36,
+              borderRadius: 999,
+              background: 'rgba(0,0,0,0.5)',
               color: '#fff',
-              fontFamily: t.script,
+              border: 'none',
+              cursor: 'pointer',
               fontSize: 18,
             }}
           >
-            {lightbox + 1} / {photos.length}
-          </div>
-
-          <div
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: '50%',
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '0 16px',
-              transform: 'translateY(-50%)',
-            }}
-          >
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setLightbox((lightbox - 1 + photos.length) % photos.length);
-              }}
-              style={navBtn}
-            >
-              ‹
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setLightbox((lightbox + 1) % photos.length);
-              }}
-              style={navBtn}
-            >
-              ›
-            </button>
-          </div>
+            ✕
+          </button>
         </div>
       )}
     </section>

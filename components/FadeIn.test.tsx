@@ -18,7 +18,7 @@ function makeMockObserver(triggerImmediately = false) {
     takeRecords: () => [] as IntersectionObserverEntry[],
   };
 
-  const MockClass = vi.fn().mockImplementation(function(this: any, cb: ObserverCallback) {
+  const MockClass = vi.fn().mockImplementation(function(this: object, cb: ObserverCallback) {
     savedCallback = cb;
     return mockObserver;
   });
@@ -40,7 +40,7 @@ describe('FadeIn', () => {
 
   it('isIntersecting true 시 opacity가 1이 되어야 함', async () => {
     const { MockClass, trigger } = makeMockObserver();
-    global.IntersectionObserver = MockClass as any;
+    global.IntersectionObserver = MockClass as unknown as typeof IntersectionObserver;
 
     const { container } = render(<FadeIn>내용</FadeIn>);
     const div = container.firstChild as HTMLElement;
@@ -54,10 +54,10 @@ describe('FadeIn', () => {
 
   it('isIntersecting false 이면 visible이 변경되지 않아야 함', () => {
     let savedCallback: ObserverCallback;
-    global.IntersectionObserver = vi.fn().mockImplementation(function(this: any, cb: ObserverCallback) {
+    global.IntersectionObserver = vi.fn().mockImplementation(function(this: object, cb: ObserverCallback) {
       savedCallback = cb;
       return { observe: vi.fn(), disconnect: vi.fn(), unobserve: vi.fn(), takeRecords: () => [] };
-    }) as any;
+    }) as unknown as typeof IntersectionObserver;
 
     const { container } = render(<FadeIn>내용</FadeIn>);
     const div = container.firstChild as HTMLElement;
@@ -72,7 +72,7 @@ describe('FadeIn', () => {
   it('delay prop이 있으면 타이머 후 visible이 되어야 함', () => {
     vi.useFakeTimers();
     const { MockClass, trigger } = makeMockObserver();
-    global.IntersectionObserver = MockClass as any;
+    global.IntersectionObserver = MockClass as unknown as typeof IntersectionObserver;
 
     const { container, rerender } = render(<FadeIn delay={300}>내용</FadeIn>);
     const div = container.firstChild as HTMLElement;

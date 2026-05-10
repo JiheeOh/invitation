@@ -17,21 +17,18 @@ export default function Ornament({
 }: OrnamentProps) {
   return (
     <svg
+      viewBox="0 0 120 30"
       width={w}
-      height={h}
-      viewBox={`0 0 ${w} ${h}`}
       style={{
-        display: 'block',
-        margin: '0 auto',
         ...style,
       }}
     >
-      {/* Decorative ornament pattern */}
-      <circle cx={w / 2} cy={h / 2} r={4} fill={color} />
-      <circle cx={w / 2 - 16} cy={h / 2} r={3} fill={color} opacity={0.7} />
-      <circle cx={w / 2 + 16} cy={h / 2} r={3} fill={color} opacity={0.7} />
-      <line x1={w / 2 - 12} y1={h / 2} x2={w / 2 - 6} y2={h / 2} stroke={color} strokeWidth={1} opacity={0.5} />
-      <line x1={w / 2 + 6} y1={h / 2} x2={w / 2 + 12} y2={h / 2} stroke={color} strokeWidth={1} opacity={0.5} />
+      <g fill="none" stroke={color} strokeWidth="0.7" strokeLinecap="round">
+        <path d="M10 15 Q 30 5, 50 15 T 90 15 T 110 15" />
+        <circle cx="60" cy="15" r="2.2" fill={color} stroke="none" />
+        <circle cx="30" cy="10" r="1.1" fill={color} stroke="none" />
+        <circle cx="90" cy="10" r="1.1" fill={color} stroke="none" />
+      </g>
     </svg>
   );
 }

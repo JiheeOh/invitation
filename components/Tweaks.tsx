@@ -85,7 +85,7 @@ export default function Tweaks({ cfg, setCfg, onClose }: TweaksProps) {
               flex: 1,
               padding: 8,
               border: `2px solid ${cfg.theme === s.key ? s.accent : 'transparent'}`,
-              background: s.paper,
+              background: s.bg,
               borderRadius: 6,
               cursor: 'pointer',
               display: 'flex',
@@ -108,7 +108,7 @@ export default function Tweaks({ cfg, setCfg, onClose }: TweaksProps) {
                   width: 14,
                   height: 14,
                   borderRadius: 999,
-                  background: s.coverBg,
+                  background: s.bg,
                 }}
               />
             </div>

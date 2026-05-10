@@ -59,7 +59,10 @@
       "Bash(kill 29632)",
       "Bash(kill 52027)",
       "Bash(brew install *)",
-      "Bash(gh auth *)"
+      "Bash(gh auth *)",
+      "Bash(chmod +x *)",
+      "WebFetch(domain:guide.ncloud-docs.com)",
+      "WebFetch(domain:www.hotels.com)"
     ]
   }
 }

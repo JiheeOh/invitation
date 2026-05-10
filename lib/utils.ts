@@ -1,8 +1,6 @@
 export interface Theme {
   name: string;
   bg: string;
-  paper: string;
-  coverBg: string;
   ink: string;
   muted: string;
   line: string;
@@ -10,7 +8,6 @@ export interface Theme {
   accentSoft: string;
   serif: string;
   sans: string;
-  script: string;
 }
 
 export interface FontSet {

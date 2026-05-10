@@ -70,7 +70,7 @@ export default function Slideshow({ t, onClose }: SlideshowProps) {
           padding: 18,
           color: '#fff',
           textAlign: 'center',
-          fontFamily: t.script,
+          fontFamily: t.serif,
           fontSize: 20,
           background: '#000',
         }}

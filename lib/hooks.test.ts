@@ -83,10 +83,10 @@ describe('useFadeIn', () => {
       disconnect: vi.fn(),
       takeRecords: () => [],
     };
-    global.IntersectionObserver = vi.fn().mockImplementation(function(this: any, cb) {
+    global.IntersectionObserver = vi.fn().mockImplementation(function(this: object, cb) {
       savedCallback = cb;
       return mockObserver;
-    }) as any;
+    }) as unknown as typeof IntersectionObserver;
 
     const { result } = renderHook(() => useFadeIn(0));
     const div = document.createElement('div');

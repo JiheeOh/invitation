@@ -1,81 +1,336 @@
+'use client';
+
 import React from 'react';
 import FadeIn from '../FadeIn';
-import SectionLabel from '../SectionLabel';
 import { WEDDING } from '@/lib/wedding-data';
+import { getStorageUrl } from '@/lib/supabase';
 import type { Theme } from '@/lib/utils';
 
 interface FamilyProps {
   t: Theme;
+  onContact: () => void;
 }
 
-interface RowProps {
-  parents: string;
-  role: string;
-  name: string;
-  phone: string;
-  t: Theme;
-}
+export default function Family({ t, onContact }: FamilyProps) {
+  const groomPortrait = getStorageUrl(
+    WEDDING.storage.bucket,
+    WEDDING.storage.portraits.groom
+  );
+  const bridePortrait = getStorageUrl(
+    WEDDING.storage.bucket,
+    WEDDING.storage.portraits.bride
+  );
 
-const Row = ({ parents, role, name, phone, t }: RowProps) => (
-    <div
+  const People = [
+    {
+      side: '신랑',
+      sideColor: '#7AA0CC',
+      person: WEDDING.groom,
+      photo: groomPortrait,
+    },
+    {
+      side: '신부',
+      sideColor: '#D08A8A',
+      person: WEDDING.bride,
+      photo: bridePortrait,
+    },
+  ];
+
+  return (
+    <section
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '16px 0',
-        borderBottom: `1px solid ${t.line}`,
+        padding: '72px 28px 64px',
+        background: '#fff',
+        color: t.ink,
+        textAlign: 'center',
       }}
     >
-      <div style={{ fontSize: 13, color: t.muted, letterSpacing: 0.5 }}>
-        {parents}의 <span style={{ color: t.accent, fontWeight: 500 }}>{role}</span>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{ fontFamily: t.serif, fontSize: 13, color: t.ink }}>{name}</div>
-        <a
-          href={`tel:${phone}`}
+      <FadeIn>
+        <div
           style={{
-            width: 26,
-            height: 26,
-            borderRadius: 999,
-            border: `1px solid ${t.line}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: t.accent,
-            textDecoration: 'none',
-            flex: 'none',
+            fontFamily: t.serif,
+            fontSize: 16,
+            color: t.ink,
+            letterSpacing: 2,
+            fontWeight: 500,
           }}
         >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.1-8.7A2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.7.6 2.5a2 2 0 01-.5 2.1L8 9.6a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.5c.8.3 1.6.5 2.5.6A2 2 0 0122 16.9z" />
-          </svg>
-        </a>
-      </div>
-    </div>
-);
+          {WEDDING.greeting.title}
+        </div>
+        <div
+          style={{
+            marginTop: 22,
+            fontFamily: t.serif,
+            fontSize: 12.5,
+            color: t.muted,
+            lineHeight: 2,
+            whiteSpace: 'pre-line',
+          }}
+        >
+          {WEDDING.greeting.paragraph1}
+        </div>
+        <div
+          style={{
+            marginTop: 18,
+            fontFamily: t.serif,
+            fontSize: 12.5,
+            color: t.muted,
+            lineHeight: 2,
+            whiteSpace: 'pre-line',
+          }}
+        >
+          {WEDDING.greeting.paragraph2}
+        </div>
 
-export default function Family({ t }: FamilyProps) {
-  return (
-    <section style={{ padding: '72px 32px', background: '#fff', color: t.ink }}>
-      <FadeIn>
-        <SectionLabel t={t} eng="people" ko="신랑 · 신부" />
-        <div style={{ marginTop: 28 }}>
-          <Row
-            parents={WEDDING.groom.parents}
-            role={WEDDING.groom.role}
-            name={WEDDING.groom.name}
-            phone={WEDDING.groom.phone}
-            t={t}
-          />
-          <Row
-            parents={WEDDING.bride.parents}
-            role={WEDDING.bride.role}
-            name={WEDDING.bride.name}
-            phone={WEDDING.bride.phone}
-            t={t}
-          />
+        <div
+          style={{
+            marginTop: 36,
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 14,
+          }}
+        >
+          {People.map((p, i) => (
+            <div key={i} style={{ aspectRatio: '1/1', overflow: 'hidden' }}>
+              {p.photo ? (
+                <img
+                  src={p.photo}
+                  alt={p.person.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    background: '#EDE6F3',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#999',
+                  }}
+                >
+                  Photo
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div
+          style={{
+            marginTop: 18,
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 14,
+          }}
+        >
+          {People.map((p, i) => (
+            <div key={i} style={{ textAlign: 'center', fontFamily: t.serif }}>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: t.ink,
+                  letterSpacing: 1,
+                }}
+              >
+                <span style={{ color: p.sideColor, fontSize: 11, marginRight: 6 }}>
+                  {p.side}
+                </span>
+                {p.person.name}
+              </div>
+              <div
+                style={{
+                  marginTop: 14,
+                  fontSize: 12,
+                  color: t.ink,
+                  lineHeight: 1.95,
+                }}
+              >
+                {p.person.birth}
+                {p.person.birth && <br />}
+                {p.person.city}
+                {p.person.city && <br />}
+                {p.person.job}
+              </div>
+              <div style={{ marginTop: 18, fontSize: 12, color: t.ink }}>
+                {p.person.wish}
+              </div>
+              <div
+                style={{
+                  marginTop: 14,
+                  fontSize: 11,
+                  color: t.muted,
+                }}
+              >
+                {p.person.fatherName} · {p.person.motherName} 의 {p.person.role}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: 36 }}>
+          <button
+            onClick={onContact}
+            style={{
+              padding: '12px 28px',
+              background: 'transparent',
+              color: t.ink,
+              border: `1px solid ${t.line}`,
+              borderRadius: 4,
+              fontFamily: t.serif,
+              fontSize: 12,
+              letterSpacing: 1.5,
+              cursor: 'pointer',
+            }}
+          >
+            혼주에게 연락하기
+          </button>
         </div>
       </FadeIn>
     </section>
+  );
+}
+
+export function ContactsModalContent({ t }: { t: Theme }) {
+  const iconBtn = {
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    border: `1px solid ${t.line}`,
+    color: t.ink,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textDecoration: 'none',
+    background: '#fff',
+  } as const;
+
+  const Side = ({
+    title,
+    people,
+  }: {
+    title: string;
+    people: Array<{ role: string; name: string; tel: string }>;
+  }) => (
+    <div style={{ textAlign: 'center' }}>
+      <div
+        style={{
+          fontFamily: t.serif,
+          fontSize: 13,
+          color: t.ink,
+          fontWeight: 500,
+          marginBottom: 18,
+        }}
+      >
+        {title}
+      </div>
+      {people.map((p, i) => (
+        <div key={i} style={{ marginBottom: 22 }}>
+          <div
+            style={{
+              fontFamily: t.serif,
+              fontSize: 12.5,
+              color: t.ink,
+              marginBottom: 10,
+            }}
+          >
+            {p.role} {p.name}
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 18,
+              opacity: p.tel ? 1 : 0.35,
+            }}
+          >
+            <a
+              href={p.tel ? `tel:${p.tel}` : undefined}
+              aria-label="call"
+              style={iconBtn as React.CSSProperties}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z" />
+              </svg>
+            </a>
+            <a
+              href={p.tel ? `sms:${p.tel}` : undefined}
+              aria-label="message"
+              style={iconBtn as React.CSSProperties}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 18,
+        paddingTop: 8,
+      }}
+    >
+      <Side
+        title="신랑측"
+        people={[
+          {
+            role: '아버지',
+            name: WEDDING.groom.fatherName,
+            tel: WEDDING.contacts.groomFather.tel,
+          },
+          {
+            role: '어머니',
+            name: WEDDING.groom.motherName,
+            tel: WEDDING.contacts.groomMother.tel,
+          },
+        ]}
+      />
+      <Side
+        title="신부측"
+        people={[
+          {
+            role: '아버지',
+            name: WEDDING.bride.fatherName,
+            tel: WEDDING.contacts.brideFather.tel,
+          },
+          {
+            role: '어머니',
+            name: WEDDING.bride.motherName,
+            tel: WEDDING.contacts.brideMother.tel,
+          },
+        ]}
+      />
+    </div>
   );
 }

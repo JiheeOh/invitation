@@ -18,7 +18,7 @@ describe('WEDDING.location', () => {
       const subway = WEDDING.location.transport[0];
 
       it('아이콘은 subway이어야 함', () => {
-        expect(subway.icon).toBe('subway');
+        expect(subway.kind).toBe('subway');
       });
 
       it('제목은 지하철이어야 함', () => {
@@ -54,7 +54,7 @@ describe('WEDDING.location', () => {
       const bus = WEDDING.location.transport[1];
 
       it('아이콘은 bus이어야 함', () => {
-        expect(bus.icon).toBe('bus');
+        expect(bus.kind).toBe('bus');
       });
 
       it('제목은 버스이어야 함', () => {
@@ -86,7 +86,7 @@ describe('WEDDING.location', () => {
       const car = WEDDING.location.transport[2];
 
       it('아이콘은 car이어야 함', () => {
-        expect(car.icon).toBe('car');
+        expect(car.kind).toBe('car');
       });
 
       it('제목은 자가용이어야 함', () => {

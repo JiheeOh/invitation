@@ -96,7 +96,7 @@ export default function CalendarSection({ t }: CalendarSectionProps) {
                     style={{
                         marginTop: 28,
                         textAlign: 'center',
-                        fontFamily: t.script,
+                        fontFamily: t.serif,
                         fontSize: 20,
                         color: t.accent,
                     }}
@@ -198,7 +198,7 @@ export default function CalendarSection({ t }: CalendarSectionProps) {
                     style={{
                         marginTop: 14,
                         textAlign: 'center',
-                        fontFamily: t.script,
+                        fontFamily: t.serif,
                         fontSize: 16,
                         color: t.accent,
                     }}

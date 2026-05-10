@@ -14,13 +14,14 @@ interface AccountsProps {
 interface GroupProps {
   id: string;
   title: string;
+  color: string;
   items: readonly { who: string; bank: string; num: string }[];
   open: string | null;
   setOpen: (id: string | null) => void;
   t: Theme;
 }
 
-const Group = ({ id, title, items, open, setOpen, t }: GroupProps) => {
+const Group = ({ id, title, color, items, open, setOpen, t }: GroupProps) => {
   const isOpen = open === id;
 
   return (
@@ -30,7 +31,7 @@ const Group = ({ id, title, items, open, setOpen, t }: GroupProps) => {
         borderRadius: 4,
         overflow: 'hidden',
         marginBottom: 10,
-        background: t.paper,
+        background: '#fff',
       }}
     >
       <button
@@ -47,7 +48,7 @@ const Group = ({ id, title, items, open, setOpen, t }: GroupProps) => {
           justifyContent: 'space-between',
           fontFamily: t.serif,
           fontSize: 14,
-          color: t.ink,
+          color: color,
           fontWeight: 500,
         }}
       >
@@ -111,10 +112,24 @@ export default function Accounts({ t }: AccountsProps) {
       <FadeIn>
         <SectionLabel t={t} eng="accounts" ko="마음 전하실 곳" />
 
+        <div
+          style={{
+            marginTop: 28,
+            textAlign: 'center',
+            fontSize: 12,
+            color: t.muted,
+            lineHeight: 1.95,
+            whiteSpace: 'pre-line',
+          }}
+        >
+          {WEDDING.thanksMessage}
+        </div>
+
         <div style={{ marginTop: 28 }}>
           <Group
             id="groom"
-            title={`신랑 ${WEDDING.groom.name}`}
+            title="신랑측"
+            color="#5C7AA8"
             items={WEDDING.accounts.groom}
             open={open}
             setOpen={setOpen}
@@ -122,29 +137,13 @@ export default function Accounts({ t }: AccountsProps) {
           />
           <Group
             id="bride"
-            title={`신부 ${WEDDING.bride.name}`}
+            title="신부측"
+            color="#C8756E"
             items={WEDDING.accounts.bride}
             open={open}
             setOpen={setOpen}
             t={t}
           />
-        </div>
-
-        <div
-          style={{
-            marginTop: 24,
-            padding: '12px 16px',
-            background: t.accentSoft,
-            borderRadius: 4,
-            fontSize: 12,
-            color: t.ink,
-            lineHeight: 1.6,
-            fontFamily: t.sans,
-          }}
-        >
-          마음의 전하고 싶으신 분들을 위해 계좌 정보를 올렸습니다.
-          <br />
-          선물은 정중한 마음으로 받겠습니다.
         </div>
       </FadeIn>
     </section>

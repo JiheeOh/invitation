@@ -3,15 +3,15 @@
 import React, { useState } from 'react';
 import type { Theme } from '@/lib/utils';
 import Cover from './sections/Cover';
-import Greeting from './sections/Greeting';
-import Family from './sections/Family';
+import Family, { ContactsModalContent } from './sections/Family';
 import CalendarSection from './sections/CalendarSection';
 import Gallery from './sections/Gallery';
-import Interview from './sections/Interview';
+import { InterviewButton, InterviewModalContent } from './sections/Interview';
 import Location from './sections/Location';
 import Accounts from './sections/Accounts';
+import Closing from './sections/Closing';
 import Share from './sections/Share';
-import Slideshow from './Slideshow';
+import Modal from './Modal';
 import PetalShower from './PetalShower';
 import MusicToggle from './MusicToggle';
 
@@ -21,7 +21,8 @@ interface InvitationProps {
 }
 
 export default function Invitation({ t, petals = true }: InvitationProps) {
-  const [slideshow, setSlideshow] = useState(false);
+  const [intvOpen, setIntvOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   return (
     <div
@@ -38,20 +39,36 @@ export default function Invitation({ t, petals = true }: InvitationProps) {
         scrollbarWidth: 'thin',
       }}
     >
-      {petals && <PetalShower count={16} />}
+      {petals && <PetalShower count={28} />}
       <MusicToggle t={t} />
 
       <Cover t={t} />
-      <Greeting t={t} />
-      <Family t={t} />
+      <Family t={t} onContact={() => setContactOpen(true)} />
+      <Gallery t={t} />
+      <InterviewButton t={t} onOpen={() => setIntvOpen(true)} />
       <CalendarSection t={t} />
-      <Gallery t={t} onOpenSlideshow={() => setSlideshow(true)} />
-      <Interview t={t} />
       <Location t={t} />
       <Accounts t={t} />
+      <Closing t={t} />
       <Share t={t} />
 
-      {slideshow && <Slideshow t={t} onClose={() => setSlideshow(false)} />}
+      <Modal
+        t={t}
+        open={intvOpen}
+        onClose={() => setIntvOpen(false)}
+        title="웨딩 인터뷰"
+      >
+        <InterviewModalContent t={t} />
+      </Modal>
+
+      <Modal
+        t={t}
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+        title="혼주에게 연락하기"
+      >
+        <ContactsModalContent t={t} />
+      </Modal>
     </div>
   );
 }

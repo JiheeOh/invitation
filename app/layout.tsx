@@ -1,6 +1,32 @@
 import type { Metadata, Viewport } from 'next';
+import { Cormorant_Garamond, Nanum_Myeongjo, Noto_Serif_KR, Noto_Sans_KR } from 'next/font/google';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import 'leaflet/dist/leaflet.css';
+
+const cormorant = Cormorant_Garamond({
+  weight: ['400', '500', '600'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-cormorant',
+});
+
+const nanumMyeongjo = Nanum_Myeongjo({
+  weight: ['400', '700'],
+  display: 'swap',
+  variable: '--font-nanum-myeongjo',
+});
+
+const notoSerifKr = Noto_Serif_KR({
+  weight: ['300', '400', '600'],
+  display: 'swap',
+  variable: '--font-noto-serif-kr',
+});
+
+const notoSansKr = Noto_Sans_KR({
+  weight: ['400', '500'],
+  display: 'swap',
+  variable: '--font-noto-sans-kr',
+});
 
 export const metadata: Metadata = {
   title: '모바일 청첩장 · 허재 ♡ 오지희',
@@ -20,19 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className="h-full">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@400;500&family=Parisienne:wght@400&family=Dancing+Script:wght@400;600&family=Caveat:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="ko" className={`h-full ${cormorant.variable} ${nanumMyeongjo.variable} ${notoSerifKr.variable} ${notoSansKr.variable}`}>
       <body style={{ margin: 0, padding: 0, height: '100%' }}>
         <ThemeProvider>
           {children}

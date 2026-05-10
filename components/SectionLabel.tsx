@@ -29,7 +29,7 @@ export default function SectionLabel({ t, eng, ko }: SectionLabelProps) {
           fontSize: 15,
           letterSpacing: 3,
           color: t.ink,
-          fontWeight: 400,
+          fontWeight: 500,
         }}
       >
         {ko}

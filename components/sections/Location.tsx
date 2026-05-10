@@ -11,14 +11,14 @@ interface LocationProps {
 
 interface TransportRowProps {
   t: Theme;
-  icon: 'subway' | 'bus' | 'car';
+  kind: 'subway' | 'bus' | 'car';
   title: string;
   lines: readonly string[];
 }
 
 const TransportRow = ({
   t,
-  icon,
+  kind,
   title,
   lines,
 }: TransportRowProps) => {
@@ -48,7 +48,7 @@ const TransportRow = ({
           height="18"
           viewBox="0 0 24 24"
           fill="currentColor"
-          dangerouslySetInnerHTML={{ __html: icons[icon] }}
+          dangerouslySetInnerHTML={{ __html: icons[kind] }}
         />
       </div>
       <div>
@@ -238,7 +238,7 @@ export default function Location({ t }: LocationProps) {
           }}
         >
           {WEDDING.location.transport.map((transport, i) => (
-            <TransportRow key={i} t={t} icon={transport.icon} title={transport.title} lines={transport.lines} />
+            <TransportRow key={i} t={t} kind={transport.kind} title={transport.title} lines={transport.lines} />
           ))}
         </div>
       </FadeIn>
