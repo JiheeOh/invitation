@@ -64,7 +64,8 @@
       "WebFetch(domain:guide.ncloud-docs.com)",
       "WebFetch(domain:www.hotels.com)",
       "Bash(xargs ls -la)",
-      "Bash(npx vitest *)"
+      "Bash(npx vitest *)",
+      "Bash(grep -E '\\\\.\\(tsx|ts|css|scss\\)$')"
     ]
   }
 }

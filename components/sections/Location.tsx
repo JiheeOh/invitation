@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
 import { WEDDING } from '@/lib/wedding-data';
+import { copyToClipboard } from '@/lib/utils';
 import type { Theme } from '@/lib/utils';
 
 interface LocationProps {
@@ -76,6 +78,47 @@ const TransportRow = ({
         ))}
       </div>
     </div>
+  );
+};
+
+interface AddressCopyBtnProps {
+  t: Theme;
+  address: string;
+}
+
+const AddressCopyBtn = ({ t, address }: AddressCopyBtnProps) => {
+  const [copied, setCopied] = useState(false);
+
+  const onCopy = async () => {
+    try {
+      await copyToClipboard(address);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch {}
+  };
+
+  return (
+    <button
+      onClick={onCopy}
+      style={{
+        marginTop: 8,
+        width: '100%',
+        padding: '10px 6px',
+        border: `1px solid ${copied ? t.accent : t.line}`,
+        background: copied ? t.accent + '11' : 'transparent',
+        borderRadius: 4,
+        fontFamily: t.sans,
+        fontSize: 12,
+        color: copied ? t.accent : t.ink,
+        cursor: 'pointer',
+        transition: 'all .25s',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {copied ? '복사되었습니다' : '주소 복사하기'}
+    </button>
   );
 };
 
@@ -235,6 +278,8 @@ export default function Location({ t }: LocationProps) {
             T map
           </a>
         </div>
+
+        <AddressCopyBtn t={t} address={WEDDING.address} />
 
         <div
           style={{
