@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { THEMES, FONT_SETS } from '@/lib/wedding-data';
 import type { Theme } from '@/lib/utils';
 import Invitation from '@/components/Invitation';
@@ -16,6 +16,13 @@ export default function Home() {
     const baseTheme = THEMES[cfg.theme] || THEMES.lavender;
     const fontSet = FONT_SETS[cfg.font] || FONT_SETS.hand;
     const theme: Theme = useMemo(() => ({ ...baseTheme, ...fontSet }), [baseTheme, fontSet]);
+
+    useEffect(() => {
+        document.documentElement.style.setProperty('--accent', theme.accent);
+        document.documentElement.style.setProperty('--accent-soft', theme.accentSoft);
+        document.documentElement.style.setProperty('--ink', theme.ink);
+        document.documentElement.style.setProperty('--muted', theme.muted);
+    }, [theme.accent, theme.accentSoft, theme.ink, theme.muted]);
 
     return (
         <>

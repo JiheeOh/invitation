@@ -12,7 +12,7 @@ const tones = {
   cream: { bg: '#EFE5D5', fg: '#B09D7C' },
   sage: { bg: '#DCE2D4', fg: '#7F9478' },
   blush: { bg: '#F4E0DD', fg: '#C4928A' },
-  lavender: { bg: '#EDE6F3', fg: '#8E7AB8' },
+  lavender: { bg: '#F291A8', fg: '#CF7C90' },
   cool: { bg: '#E8E4F0', fg: '#7B6F9C' },
 };
 

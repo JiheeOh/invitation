@@ -199,8 +199,9 @@ export default function CalendarSection({ t }: CalendarSectionProps) {
                         marginTop: 14,
                         textAlign: 'center',
                         fontFamily: t.serif,
-                        fontSize: 16,
-                        color: t.accent,
+                        fontSize: 13,
+                        color: t.muted,
+                        lineHeight: 1.9,
                     }}
                 >
                     {WEDDING.groom.name} & {WEDDING.bride.name}의 결혼식이 {days}일 남았습니다

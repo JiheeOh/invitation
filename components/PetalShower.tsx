@@ -64,7 +64,7 @@ export default function PetalShower({ enabled = true, count = 26 }: PetalShowerP
           100% { transform: translate3d(0, 112%, 0) rotate(calc(var(--r) + var(--spin))); opacity: 0; }
         }
       `}</style>
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 40 }}>
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 1 }}>
         {items && items.length > 0 && items.map((p, i) => (
           <svg
             key={i}

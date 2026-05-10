@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import FadeIn from '../FadeIn';
 import { WEDDING } from '@/lib/wedding-data';
 import { getStorageUrl } from '@/lib/supabase';
@@ -19,17 +20,14 @@ export default function Closing({ t }: ClosingProps) {
   return (
     <section style={{ padding: '40px 0 0', background: '#fff', color: t.ink }}>
       <FadeIn>
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', aspectRatio: '3/4' }}>
           {closingUrl && (
-            <img
+            <Image
               src={closingUrl}
               alt="closing"
-              style={{
-                width: '100%',
-                aspectRatio: '3/4',
-                objectFit: 'cover',
-                display: 'block',
-              }}
+              fill
+              sizes="100vw"
+              style={{ objectFit: 'cover' }}
             />
           )}
           <div

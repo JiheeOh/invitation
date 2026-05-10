@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { WEDDING } from '@/lib/wedding-data';
 import { getStorageUrl } from '@/lib/supabase';
 import type { Theme } from '@/lib/utils';
@@ -17,22 +18,20 @@ export default function Cover({ t }: CoverProps) {
       <section
         style={{
           position: 'relative',
-          height: 720,
+          height: 'min(720px, calc(100dvh - 80px))',
           overflow: 'hidden',
-          background: '#EDE6F3',
+          background: '#F5F5F5',
+          zIndex: 2,
         }}
       >
         {coverUrl && (
-          <img
+          <Image
             src={coverUrl}
             alt="cover"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: 'contain' }}
           />
         )}
       </section>
@@ -46,24 +45,23 @@ export default function Cover({ t }: CoverProps) {
       >
         <div
           style={{
-            fontFamily: t.serif,
+            fontFamily: t.sans,
             fontSize: 14,
             letterSpacing: 4,
             fontWeight: 400,
-            fontVariantNumeric: 'lining-nums',
           }}
         >
           {WEDDING.coverDate} &nbsp; {WEDDING.coverTime}
         </div>
         <div
           style={{
-            fontFamily: t.serif,
+            fontFamily: t.sans,
             fontSize: 12,
             marginTop: 8,
             letterSpacing: 2,
           }}
         >
-          {WEDDING.venue} {WEDDING.hall}
+          {WEDDING.venue}<br />{WEDDING.hall}
         </div>
       </div>
     </>
