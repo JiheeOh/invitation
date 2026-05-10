@@ -25,8 +25,8 @@ describe('WEDDING.location', () => {
         expect(subway.title).toBe('지하철');
       });
 
-      it('4개의 라인 정보가 있어야 함', () => {
-        expect(subway.lines).toHaveLength(4);
+      it('2개의 라인 정보가 있어야 함', () => {
+        expect(subway.lines).toHaveLength(2);
       });
 
       it('신도림역 정보를 포함해야 함', () => {
@@ -36,17 +36,17 @@ describe('WEDDING.location', () => {
       });
 
       it('신도림역 셔틀버스 정보를 포함해야 함', () => {
-        expect(subway.lines[1]).toContain('셔틀버스 수시 운행');
+        expect(subway.lines[0]).toContain('셔틀버스 수시 운행');
       });
 
       it('구로역 정보를 포함해야 함', () => {
-        expect(subway.lines[2]).toContain('구로역');
-        expect(subway.lines[2]).toContain('1호선');
-        expect(subway.lines[2]).toContain('도보 5분');
+        expect(subway.lines[1]).toContain('구로역');
+        expect(subway.lines[1]).toContain('1호선');
+        expect(subway.lines[1]).toContain('도보 5분');
       });
 
       it('구로역 셔틀버스 정보를 포함해야 함', () => {
-        expect(subway.lines[3]).toContain('셔틀버스 미운행');
+        expect(subway.lines[1]).toContain('셔틀버스 미운행');
       });
     });
 

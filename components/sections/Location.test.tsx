@@ -66,7 +66,7 @@ describe('Location 컴포넌트', () => {
 
     it('버스 정보가 렌더링되어야 함', () => {
       render(<Location t={theme} />);
-      expect(screen.getByText(/\[신도림동\(구로역\)\]/)).toBeInTheDocument();
+      expect(screen.getByText(/신도림동\(구로역\)/)).toBeInTheDocument();
       expect(screen.getByText(/경기일반/)).toBeInTheDocument();
     });
 
@@ -91,37 +91,67 @@ describe('Location 컴포넌트', () => {
       vi.restoreAllMocks();
     });
 
-    it('T map 클릭 시 tmap:// 딥링크로 이동해야 함', () => {
-      render(<Location t={theme} />);
-      const tmapLink = screen.getByRole('link', { name: 'T map' });
-      fireEvent.click(tmapLink);
-      expect(window.location.href).toContain('tmap://route');
+    describe('Android', () => {
+      beforeEach(() => {
+        Object.defineProperty(navigator, 'userAgent', {
+          value: 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 Chrome/114',
+          configurable: true,
+        });
+      });
+
+      it('intent:// 스킴으로 이동해야 함', () => {
+        render(<Location t={theme} />);
+        fireEvent.click(screen.getByRole('link', { name: 'T map' }));
+        expect(window.location.href).toContain('intent://route');
+        expect(window.location.href).toContain('scheme=tmap');
+        expect(window.location.href).toContain('package=com.skt.tmap.ku');
+      });
+
+      it('좌표가 URL에 포함되어야 함', () => {
+        render(<Location t={theme} />);
+        fireEvent.click(screen.getByRole('link', { name: 'T map' }));
+        expect(window.location.href).toContain(`goalx=${WEDDING.location.lng}`);
+        expect(window.location.href).toContain(`goaly=${WEDDING.location.lat}`);
+      });
+
+      it('tmap.life fallback을 호출하지 않아야 함', () => {
+        const windowOpen = vi.spyOn(window, 'open').mockImplementation(() => null);
+        render(<Location t={theme} />);
+        fireEvent.click(screen.getByRole('link', { name: 'T map' }));
+        vi.advanceTimersByTime(2000);
+        expect(windowOpen).not.toHaveBeenCalled();
+      });
     });
 
-    it('앱 미설치(document.hidden=false)이면 2초 후 tmap.life로 이동해야 함', () => {
-      Object.defineProperty(document, 'hidden', { value: false, configurable: true });
-      const windowOpen = vi.spyOn(window, 'open').mockImplementation(() => null);
+    describe('iOS / 기타', () => {
+      beforeEach(() => {
+        Object.defineProperty(navigator, 'userAgent', {
+          value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15',
+          configurable: true,
+        });
+      });
 
-      render(<Location t={theme} />);
-      const tmapLink = screen.getByRole('link', { name: 'T map' });
-      fireEvent.click(tmapLink);
+      it('tmap:// 딥링크로 이동해야 함', () => {
+        render(<Location t={theme} />);
+        fireEvent.click(screen.getByRole('link', { name: 'T map' }));
+        expect(window.location.href).toContain('tmap://route');
+      });
 
-      vi.advanceTimersByTime(2000);
+      it('앱 미설치(document.hidden=false)이면 1.5초 후 App Store로 이동해야 함', () => {
+        Object.defineProperty(document, 'hidden', { value: false, configurable: true });
+        render(<Location t={theme} />);
+        fireEvent.click(screen.getByRole('link', { name: 'T map' }));
+        vi.advanceTimersByTime(1500);
+        expect(window.location.href).toContain('apps.apple.com');
+      });
 
-      expect(windowOpen).toHaveBeenCalledWith('https://tmap.life/', '_blank');
-    });
-
-    it('앱 설치됨(document.hidden=true)이면 tmap.life로 이동하지 않아야 함', () => {
-      Object.defineProperty(document, 'hidden', { value: true, configurable: true });
-      const windowOpen = vi.spyOn(window, 'open').mockImplementation(() => null);
-
-      render(<Location t={theme} />);
-      const tmapLink = screen.getByRole('link', { name: 'T map' });
-      fireEvent.click(tmapLink);
-
-      vi.advanceTimersByTime(2000);
-
-      expect(windowOpen).not.toHaveBeenCalled();
+      it('앱 설치됨(document.hidden=true)이면 App Store로 이동하지 않아야 함', () => {
+        Object.defineProperty(document, 'hidden', { value: true, configurable: true });
+        render(<Location t={theme} />);
+        fireEvent.click(screen.getByRole('link', { name: 'T map' }));
+        vi.advanceTimersByTime(1500);
+        expect(window.location.href).not.toContain('apps.apple.com');
+      });
     });
   });
 });

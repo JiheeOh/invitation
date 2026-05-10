@@ -82,15 +82,22 @@ const TransportRow = ({
 function handleTmapClick(e: React.MouseEvent<HTMLAnchorElement>) {
   e.preventDefault();
   const { lat, lng } = WEDDING.location;
-  const deeplink = `tmap://route?goalname=${encodeURIComponent(WEDDING.location.mapLabel)}&goalx=${lng}&goaly=${lat}&goalrad=2000`;
-  window.location.href = deeplink;
-  // T map 앱 설치 여부를 document.hidden으로 판단: 앱 실행 시 탭이 backgrounded되므로 hidden=true,
-  // 미설치 시 deeplink가 실패해도 페이지는 visible하므로 hidden=false. 2초 후 fallback 페이지 제공.
-  setTimeout(() => {
-    if (!document.hidden) {
-      window.open('https://tmap.life/', '_blank');
-    }
-  }, 2000);
+  const goalname = encodeURIComponent(WEDDING.location.mapLabel);
+  const isAndroid = /android/i.test(navigator.userAgent);
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+  if (isAndroid) {
+    window.location.href = `intent://route?goalname=${goalname}&goalx=${lng}&goaly=${lat}#Intent;scheme=tmap;package=com.skt.tmap.ku;end`;
+  } else if (isIOS) {
+    window.location.href = `tmap://route?goalname=${goalname}&goalx=${lng}&goaly=${lat}`;
+    setTimeout(() => {
+      if (!document.hidden) {
+        window.location.href = 'https://apps.apple.com/kr/app/id431589174';
+      }
+    }, 1500);
+  } else {
+    window.location.href = `tmap://route?goalname=${goalname}&goalx=${lng}&goaly=${lat}`;
+  }
 }
 
 export default function Location({ t }: LocationProps) {

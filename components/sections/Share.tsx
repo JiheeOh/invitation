@@ -1,63 +1,42 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
 import Ornament from '../Ornament';
 import { WEDDING } from '@/lib/wedding-data';
+import { getStorageUrl } from '@/lib/supabase';
 import { copyToClipboard } from '@/lib/utils';
 import type { Theme } from '@/lib/utils';
-
-interface KakaoConfig {
-  objectType: string;
-  content: {
-    title: string;
-    description: string;
-    imageUrl?: string;
-    link: {
-      webUrl: string;
-      mobileWebUrl?: string;
-    };
-  };
-  buttons?: Array<{
-    title: string;
-    link: {
-      webUrl: string;
-      mobileWebUrl?: string;
-    };
-  }>;
-}
-
-interface KakaoWindow extends Window {
-  Kakao?: {
-    init: (appKey: string) => void;
-    Share: {
-      sendDefault: (config: KakaoConfig) => void;
-    };
-  };
-}
 
 interface ShareProps {
   t: Theme;
 }
 
 export default function Share({ t }: ShareProps) {
+  useEffect(() => {
+    const kakao = window.Kakao;
+    if (kakao && !kakao.isInitialized()) {
+      kakao.init(process.env.NEXT_PUBLIC_KAKAO_APP_KEY!);
+    }
+  }, []);
+
   const handleKakaoShare = () => {
-    const kakaoWindow = window as KakaoWindow;
-    if (typeof window !== 'undefined' && kakaoWindow.Kakao?.Share) {
-      kakaoWindow.Kakao.Share.sendDefault({
+    if (typeof window !== 'undefined' && window.Kakao?.Share) {
+      window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
           title: `${WEDDING.groom.name} ♡ ${WEDDING.bride.name} 결혼식`,
           description: WEDDING.dateLabel,
-          imageUrl: 'https://via.placeholder.com/300x300',
+          imageUrl: getStorageUrl(WEDDING.storage.bucket, WEDDING.storage.cover),
           link: {
-            webUrl: typeof window !== 'undefined' ? window.location.href : '',
+            webUrl: window.location.href,
+            mobileWebUrl: window.location.href,
           },
         },
       });
     } else {
-      alert('카카오톡 API가 초기화되지 않았습니다.');
+      alert('카카오톡 공유를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -72,10 +51,9 @@ export default function Share({ t }: ShareProps) {
   };
 
   const handleSendSMS = () => {
-    const message = `${WEDDING.groom.name} ♡ ${WEDDING.bride.name}\n${WEDDING.dateLabel}\n${WEDDING.timeLabel}\n${WEDDING.venue}`;
-    const encodedMessage = encodeURIComponent(message);
-    const smsUrl = `sms:?body=${encodedMessage}`;
-    window.location.href = smsUrl;
+    const url = 'https://invitation-rho-neon.vercel.app/';
+    const message = `${WEDDING.groom.name} ♡ ${WEDDING.bride.name}\n${WEDDING.dateLabel}\n${WEDDING.timeLabel}\n${WEDDING.venue}\n${WEDDING.hall}\n${url}`;
+    window.location.href = `sms:?body=${encodeURIComponent(message)}`;
   };
 
   return (

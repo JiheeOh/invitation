@@ -49,7 +49,7 @@ export const WEDDING = {
 소중한 축하를 보내주셔서 감사드리며,
 따뜻한 마음에 깊이 감사드립니다.`,
 
-    closingMessage: '행복하게 잘 살겠습니다',
+    closingMessage: '행복하게 잘 살겠습니다 :)',
 
     accounts: {
         groom: [
