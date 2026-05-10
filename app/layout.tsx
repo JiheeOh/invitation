@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import 'leaflet/dist/leaflet.css';
 
 export const metadata: Metadata = {
   title: '모바일 청첩장 · 허재 ♡ 오지희',

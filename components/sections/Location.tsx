@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import dynamic from 'next/dynamic';
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
 import { WEDDING } from '@/lib/wedding-data';
@@ -14,6 +16,11 @@ interface TransportRowProps {
   title: string;
   lines: readonly string[];
 }
+
+const MapView = dynamic(() => import('@/components/MapView'), {
+  ssr: false,
+  loading: () => <div style={{ width: '100%', height: '100%', background: '#f4f4f4' }} />,
+});
 
 const TransportRow = ({
   t,
@@ -79,6 +86,24 @@ const TransportRow = ({
 };
 
 export default function Location({ t }: LocationProps) {
+  const { lat, lng } = WEDDING.location;
+  const venueName = encodeURIComponent(WEDDING.venue);
+
+  const mapLinks = [
+    {
+      name: '네이버지도',
+      url: `https://map.naver.com/v5/entry/address/${lng},${lat}?c=${lng},${lat},15,0,0,0,dh`,
+    },
+    {
+      name: '카카오맵',
+      url: `https://map.kakao.com/link/map/${venueName},${lat},${lng}`,
+    },
+    {
+      name: 'T map',
+      url: `tmap://route?goalname=${venueName}&goalx=${lng}&goaly=${lat}&goalrad=2000`,
+    },
+  ];
+
   return (
     <section
       style={{
@@ -127,72 +152,11 @@ export default function Location({ t }: LocationProps) {
             marginTop: 20,
             height: 180,
             borderRadius: 6,
-            background: `
-              linear-gradient(90deg, transparent 49.7%, ${t.line} 49.7%, ${t.line} 50.3%, transparent 50.3%),
-              linear-gradient(0deg, transparent 49.7%, ${t.line} 49.7%, ${t.line} 50.3%, transparent 50.3%),
-              repeating-linear-gradient(0deg, ${t.paper} 0 30px, ${t.paper}ee 30px 31px),
-              ${t.paper}
-            `,
-            border: `1px solid ${t.line}`,
-            position: 'relative',
             overflow: 'hidden',
+            border: `1px solid ${t.line}`,
           }}
         >
-          <div
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: '38%',
-              height: 18,
-              background: '#fff',
-              borderTop: `1px solid ${t.line}`,
-              borderBottom: `1px solid ${t.line}`,
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: '62%',
-              width: 14,
-              background: '#fff',
-              borderLeft: `1px solid ${t.line}`,
-              borderRight: `1px solid ${t.line}`,
-            }}
-          />
-
-          <div
-            style={{
-              position: 'absolute',
-              left: '62%',
-              top: '38%',
-              transform: 'translate(-50%,-90%)',
-            }}
-          >
-            <svg width="28" height="34" viewBox="0 0 28 34">
-              <path
-                d="M14 2 C 6 2 2 8 2 14 C 2 22 14 32 14 32 C 14 32 26 22 26 14 C 26 8 22 2 14 2 z"
-                fill={t.accent}
-              />
-              <circle cx="14" cy="13" r="4" fill="#fff" />
-            </svg>
-          </div>
-
-          <div
-            style={{
-              position: 'absolute',
-              left: 10,
-              bottom: 10,
-              fontFamily: 'ui-monospace, Menlo, monospace',
-              fontSize: 9,
-              color: t.muted,
-              letterSpacing: 1,
-            }}
-          >
-            MAP PLACEHOLDER · 37.5085, 127.0459
-          </div>
+          <MapView lat={lat} lng={lng} accentColor={t.accent} />
         </div>
 
         <div
@@ -203,20 +167,7 @@ export default function Location({ t }: LocationProps) {
             marginTop: 14,
           }}
         >
-          {[
-            {
-              name: '네이버지도',
-              url: 'https://map.naver.com/v5/search/더링크서울 트리뷰트 포트폴리오 호텔 웨딩',
-            },
-            {
-              name: '카카오맵',
-              url: 'https://map.kakao.com/link/search/더링크서울',
-            },
-            {
-              name: 'T map',
-              url: 'https://tmap.life/map?keyword=더링크서울',
-            },
-          ].map(({ name, url }) => (
+          {mapLinks.map(({ name, url }) => (
             <a
               key={name}
               href={url}
