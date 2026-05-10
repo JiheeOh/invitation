@@ -32,30 +32,26 @@ describe('Location 컴포넌트', () => {
       expect(screen.getByRole('link', { name: 'T map' })).toBeInTheDocument();
     });
 
-    it('네이버지도 링크가 좌표 기반 URL이어야 함', () => {
+    it('네이버지도 링크가 주소 검색 URL이어야 함', () => {
       render(<Location t={theme} />);
-      const { lat, lng } = WEDDING.location;
       const naverLink = screen.getByRole('link', { name: '네이버지도' });
-      expect(naverLink).toHaveAttribute('href', expect.stringContaining(String(lat)));
-      expect(naverLink).toHaveAttribute('href', expect.stringContaining(String(lng)));
+      expect(naverLink).toHaveAttribute('href', expect.stringContaining('map.naver.com'));
+      expect(naverLink).toHaveAttribute('href', expect.stringContaining(encodeURIComponent(WEDDING.address)));
       expect(naverLink).toHaveAttribute('target', '_blank');
     });
 
-    it('카카오맵 링크가 좌표 기반 URL이어야 함', () => {
+    it('카카오맵 링크가 주소 검색 URL이어야 함', () => {
       render(<Location t={theme} />);
-      const { lat, lng } = WEDDING.location;
       const kakaoLink = screen.getByRole('link', { name: '카카오맵' });
-      expect(kakaoLink).toHaveAttribute('href', expect.stringContaining(String(lat)));
-      expect(kakaoLink).toHaveAttribute('href', expect.stringContaining(String(lng)));
+      expect(kakaoLink).toHaveAttribute('href', expect.stringContaining('map.kakao.com'));
+      expect(kakaoLink).toHaveAttribute('href', expect.stringContaining(encodeURIComponent(WEDDING.address)));
     });
 
-    it('T map 링크가 앱 딥링크(tmap://) 형식이어야 함', () => {
+    it('T map 링크가 주소 검색 딥링크(tmap://) 형식이어야 함', () => {
       render(<Location t={theme} />);
       const tmapLink = screen.getByRole('link', { name: 'T map' });
       expect(tmapLink).toHaveAttribute('href', expect.stringContaining('tmap://'));
-      const { lat, lng } = WEDDING.location;
-      expect(tmapLink).toHaveAttribute('href', expect.stringContaining(String(lat)));
-      expect(tmapLink).toHaveAttribute('href', expect.stringContaining(String(lng)));
+      expect(tmapLink).toHaveAttribute('href', expect.stringContaining(encodeURIComponent(WEDDING.address)));
     });
   });
 

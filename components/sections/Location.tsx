@@ -87,20 +87,20 @@ const TransportRow = ({
 
 export default function Location({ t }: LocationProps) {
   const { lat, lng } = WEDDING.location;
-  const venueName = encodeURIComponent(WEDDING.venue);
+  const address = encodeURIComponent(WEDDING.address);
 
   const mapLinks = [
     {
       name: '네이버지도',
-      url: `https://map.naver.com/v5/entry/address/${lng},${lat}?c=${lng},${lat},15,0,0,0,dh`,
+      url: `https://map.naver.com/v5/search/${address}`,
     },
     {
       name: '카카오맵',
-      url: `https://map.kakao.com/link/map/${venueName},${lat},${lng}`,
+      url: `https://map.kakao.com/link/search/${address}`,
     },
     {
       name: 'T map',
-      url: `tmap://route?goalname=${venueName}&goalx=${lng}&goaly=${lat}&goalrad=2000`,
+      url: `tmap://search?name=${address}`,
     },
   ];
 

@@ -3,9 +3,9 @@ import { WEDDING } from './wedding-data';
 
 describe('WEDDING.location', () => {
   describe('좌표', () => {
-    it('신도림역/구로역 근처로 변경되어야 함', () => {
-      expect(WEDDING.location.lat).toBe(37.5085);
-      expect(WEDDING.location.lng).toBe(126.8676);
+    it('구로구 경인로 610의 정확한 좌표이어야 함', () => {
+      expect(WEDDING.location.lat).toBe(37.5054141);
+      expect(WEDDING.location.lng).toBe(126.8840785);
     });
   });
 

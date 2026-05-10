@@ -65,8 +65,8 @@ export const WEDDING = {
   },
 
   location: {
-    lat: 37.5085,
-    lng: 126.8676,
+    lat: 37.5054141,
+    lng: 126.8840785,
     mapLabel: '더링크서울',
     transport: [
       {
