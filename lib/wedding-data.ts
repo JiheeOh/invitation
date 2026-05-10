@@ -74,12 +74,12 @@ export const WEDDING = {
     interview: [
         {
             q: '서로의 첫 인상은?',
-            groom: '많은 수강생 중에 한명인데, 자기 아냐고 당연하게 물어보는 당돌하고 귀여운 사람',
+            groom: '많은 수강생들 중에 자기 아냐고 당연한 듯이 물어보는 당돌하고 귀여운 사람',
             bride: '열정적이고 수강생들에게 정말 따뜻한 강사, 강한 인상 안에 언뜻 보이는 귀여움(?)',
         },
         {
             q: '평생 지키고 싶은 약속 한 가지는?',
-            groom: '평생 외롭게 하지 않을게',
+            groom: '평생 외롭게 하지 않을게!',
             bride: '상대의 배려와 따뜻함을 당연하게 여기지 않기',
         },
         {
@@ -106,13 +106,13 @@ export const WEDDING = {
                 kind: 'bus' as const,
                 title: '버스',
                 lines: [
-                    '[신도림동(구로역)]',
+                    '[ 신도림동(구로역) ]',
                     '경기일반  10, 11-1, 11-2, 83, 88, 530',
                     '간선  160, 503, 600, 660, 662, N16(심야)',
                     '지선  6515, 6516, 6637, 6640A, 6640B, 6713, 6411, 6511',
                     '직행  301, 320, 5200',
                     '마을  양천04',
-                    '[신도림중학교]',
+                    '[ 신도림중학교 ]',
                     '지선  5615, 5714, 6512, 6411, 6511',
                 ],
             },
@@ -131,7 +131,7 @@ export const WEDDING = {
     storage: {
         bucket: 'wedding-phots',
         cover: 'main.jpeg',
-        closing: 'closing.jpeg',
+        closing: 'closing.jpg',
         portraits: { groom: 'groom.jpg', bride: 'bride.jpg' },
     },
 } as const;
