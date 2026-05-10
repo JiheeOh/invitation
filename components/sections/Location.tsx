@@ -84,7 +84,8 @@ function handleTmapClick(e: React.MouseEvent<HTMLAnchorElement>) {
   const { lat, lng } = WEDDING.location;
   const deeplink = `tmap://route?goalname=${encodeURIComponent(WEDDING.location.mapLabel)}&goalx=${lng}&goaly=${lat}&goalrad=2000`;
   window.location.href = deeplink;
-  // 앱 미설치 시 2초 후 다운로드 페이지로 이동
+  // T map 앱 설치 여부를 document.hidden으로 판단: 앱 실행 시 탭이 backgrounded되므로 hidden=true,
+  // 미설치 시 deeplink가 실패해도 페이지는 visible하므로 hidden=false. 2초 후 fallback 페이지 제공.
   setTimeout(() => {
     if (!document.hidden) {
       window.open('https://tmap.life/', '_blank');

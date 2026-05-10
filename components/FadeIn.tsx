@@ -16,6 +16,7 @@ export default function FadeIn({ children, delay = 0 }: FadeInProps) {
     if (!el) return;
 
     const scrollRoot = el.closest('[data-scroll-root]');
+    // threshold: 0.15 ensures fade-in triggers when 15% of element is visible, avoiding premature animations
     const obs = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {

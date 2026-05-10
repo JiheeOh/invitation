@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Location from './Location';
 import { THEMES } from '@/lib/config/themes';
 import { WEDDING } from '@/lib/wedding-data';
@@ -75,6 +75,53 @@ describe('Location 컴포넌트', () => {
       expect(screen.getByText(/웨딩고객 주차 1시간 30분 무료/)).toBeInTheDocument();
       expect(screen.getAllByText(/서울특별시 구로구 경인로 610/).length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText(/신도림동 413-9/)).toBeInTheDocument();
+    });
+  });
+
+  describe('T map handleTmapClick', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+      Object.defineProperty(window, 'location', {
+        value: { href: '' },
+        writable: true,
+      });
+    });
+    afterEach(() => {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    });
+
+    it('T map 클릭 시 tmap:// 딥링크로 이동해야 함', () => {
+      render(<Location t={theme} />);
+      const tmapLink = screen.getByRole('link', { name: 'T map' });
+      fireEvent.click(tmapLink);
+      expect(window.location.href).toContain('tmap://route');
+    });
+
+    it('앱 미설치(document.hidden=false)이면 2초 후 tmap.life로 이동해야 함', () => {
+      Object.defineProperty(document, 'hidden', { value: false, configurable: true });
+      const windowOpen = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+      render(<Location t={theme} />);
+      const tmapLink = screen.getByRole('link', { name: 'T map' });
+      fireEvent.click(tmapLink);
+
+      vi.advanceTimersByTime(2000);
+
+      expect(windowOpen).toHaveBeenCalledWith('https://tmap.life/', '_blank');
+    });
+
+    it('앱 설치됨(document.hidden=true)이면 tmap.life로 이동하지 않아야 함', () => {
+      Object.defineProperty(document, 'hidden', { value: true, configurable: true });
+      const windowOpen = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+      render(<Location t={theme} />);
+      const tmapLink = screen.getByRole('link', { name: 'T map' });
+      fireEvent.click(tmapLink);
+
+      vi.advanceTimersByTime(2000);
+
+      expect(windowOpen).not.toHaveBeenCalled();
     });
   });
 });
