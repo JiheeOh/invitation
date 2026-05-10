@@ -203,9 +203,25 @@ export default function Location({ t }: LocationProps) {
             marginTop: 14,
           }}
         >
-          {['네이버지도', '카카오맵', 'T map'].map((n) => (
-            <button
-              key={n}
+          {[
+            {
+              name: '네이버지도',
+              url: 'https://map.naver.com/v5/search/더링크서울 트리뷰트 포트폴리오 호텔 웨딩',
+            },
+            {
+              name: '카카오맵',
+              url: 'https://map.kakao.com/link/search/더링크서울',
+            },
+            {
+              name: 'T map',
+              url: 'https://tmap.life/map?keyword=더링크서울',
+            },
+          ].map(({ name, url }) => (
+            <a
+              key={name}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 padding: '10px 6px',
                 border: `1px solid ${t.line}`,
@@ -215,10 +231,13 @@ export default function Location({ t }: LocationProps) {
                 fontSize: 12,
                 color: t.ink,
                 cursor: 'pointer',
+                textDecoration: 'none',
+                display: 'block',
+                textAlign: 'center',
               }}
             >
-              {n}
-            </button>
+              {name}
+            </a>
           ))}
         </div>
 
