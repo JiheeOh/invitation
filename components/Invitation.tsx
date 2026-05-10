@@ -39,7 +39,7 @@ export default function Invitation({ t, petals = true }: InvitationProps) {
         scrollbarWidth: 'thin',
       }}
     >
-      {petals && <PetalShower count={28} />}
+      {petals && <PetalShower count={20} />}
       <MusicToggle t={t} />
 
       <Cover t={t} />
