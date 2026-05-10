@@ -55,7 +55,7 @@ const TransportRow = ({
         <div
           style={{
             fontFamily: t.serif,
-            fontSize: 14,
+            fontSize: 13,
             color: t.ink,
             marginBottom: 2,
           }}
@@ -112,7 +112,7 @@ export default function Location({ t }: LocationProps) {
           style={{
             marginTop: 28,
             fontFamily: t.serif,
-            fontSize: 18,
+            fontSize: 15,
             textAlign: 'center',
             color: t.ink,
           }}
