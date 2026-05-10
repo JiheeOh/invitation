@@ -25,7 +25,7 @@ describe('Location 컴포넌트', () => {
   });
 
   describe('지도 링크 버튼', () => {
-    it('3개의 지도 링크가 렌더링되어야 함', () => {
+    it('3개의 지도 버튼이 렌더링되어야 함', () => {
       render(<Location t={theme} />);
       expect(screen.getByRole('link', { name: '네이버지도' })).toBeInTheDocument();
       expect(screen.getByRole('link', { name: '카카오맵' })).toBeInTheDocument();
@@ -47,12 +47,12 @@ describe('Location 컴포넌트', () => {
       expect(kakaoLink).toHaveAttribute('href', expect.stringContaining(encodeURIComponent(WEDDING.address)));
     });
 
-    it('T map 링크가 route 딥링크(tmap://) 형식이어야 함', () => {
+    it('T map 버튼이 onClick 핸들러를 가져야 함', () => {
       render(<Location t={theme} />);
       const tmapLink = screen.getByRole('link', { name: 'T map' });
-      expect(tmapLink).toHaveAttribute('href', expect.stringContaining('tmap://route'));
-      expect(tmapLink).toHaveAttribute('href', expect.stringContaining(String(WEDDING.location.lat)));
-      expect(tmapLink).toHaveAttribute('href', expect.stringContaining(String(WEDDING.location.lng)));
+      expect(tmapLink).toBeInTheDocument();
+      // href="#" + onClick으로 fallback 처리
+      expect(tmapLink).toHaveAttribute('href', '#');
     });
   });
 

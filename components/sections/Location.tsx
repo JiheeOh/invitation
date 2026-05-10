@@ -1,3 +1,5 @@
+'use client';
+
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
 import { WEDDING } from '@/lib/wedding-data';
@@ -77,24 +79,22 @@ const TransportRow = ({
   );
 };
 
+function handleTmapClick(e: React.MouseEvent<HTMLAnchorElement>) {
+  e.preventDefault();
+  const { lat, lng } = WEDDING.location;
+  const deeplink = `tmap://route?goalname=${encodeURIComponent(WEDDING.location.mapLabel)}&goalx=${lng}&goaly=${lat}&goalrad=2000`;
+  window.location.href = deeplink;
+  // 앱 미설치 시 2초 후 다운로드 페이지로 이동
+  setTimeout(() => {
+    if (!document.hidden) {
+      window.open('https://tmap.life/', '_blank');
+    }
+  }, 2000);
+}
+
 export default function Location({ t }: LocationProps) {
   const { lat, lng } = WEDDING.location;
   const address = encodeURIComponent(WEDDING.address);
-
-  const mapLinks = [
-    {
-      name: '네이버지도',
-      url: `https://map.naver.com/v5/search/${address}`,
-    },
-    {
-      name: '카카오맵',
-      url: `https://map.kakao.com/link/search/${address}`,
-    },
-    {
-      name: 'T map',
-      url: `tmap://route?goalname=${address}&goalx=${lng}&goaly=${lat}&goalrad=2000`,
-    },
-  ];
 
   return (
     <section
@@ -167,29 +167,65 @@ export default function Location({ t }: LocationProps) {
             marginTop: 14,
           }}
         >
-          {mapLinks.map(({ name, url }) => (
-            <a
-              key={name}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                padding: '10px 6px',
-                border: `1px solid ${t.line}`,
-                background: 'transparent',
-                borderRadius: 4,
-                fontFamily: t.sans,
-                fontSize: 12,
-                color: t.ink,
-                cursor: 'pointer',
-                textDecoration: 'none',
-                display: 'block',
-                textAlign: 'center',
-              }}
-            >
-              {name}
-            </a>
-          ))}
+          <a
+            href={`https://map.naver.com/v5/search/${address}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: '10px 6px',
+              border: `1px solid ${t.line}`,
+              background: 'transparent',
+              borderRadius: 4,
+              fontFamily: t.sans,
+              fontSize: 12,
+              color: t.ink,
+              cursor: 'pointer',
+              textDecoration: 'none',
+              display: 'block',
+              textAlign: 'center',
+            }}
+          >
+            네이버지도
+          </a>
+          <a
+            href={`https://map.kakao.com/link/search/${address}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: '10px 6px',
+              border: `1px solid ${t.line}`,
+              background: 'transparent',
+              borderRadius: 4,
+              fontFamily: t.sans,
+              fontSize: 12,
+              color: t.ink,
+              cursor: 'pointer',
+              textDecoration: 'none',
+              display: 'block',
+              textAlign: 'center',
+            }}
+          >
+            카카오맵
+          </a>
+          <a
+            href="#"
+            onClick={handleTmapClick}
+            style={{
+              padding: '10px 6px',
+              border: `1px solid ${t.line}`,
+              background: 'transparent',
+              borderRadius: 4,
+              fontFamily: t.sans,
+              fontSize: 12,
+              color: t.ink,
+              cursor: 'pointer',
+              textDecoration: 'none',
+              display: 'block',
+              textAlign: 'center',
+            }}
+          >
+            T map
+          </a>
         </div>
 
         <div
