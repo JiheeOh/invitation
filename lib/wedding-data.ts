@@ -133,5 +133,7 @@ export const WEDDING = {
         cover: 'main.jpeg',
         closing: 'closing.jpg',
         portraits: { groom: 'groom.jpg', bride: 'bride.jpg' },
+        bgmBucket: 'wedding-audio',
+        bgm: '', // 파일 업로드 후 파일명만 입력 (예: 'bgm.mp3')
     },
 } as const;

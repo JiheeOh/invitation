@@ -18,9 +18,10 @@ import MusicToggle from './MusicToggle';
 interface InvitationProps {
   t: Theme;
   petals?: boolean;
+  bgmUrl?: string;
 }
 
-export default function Invitation({ t, petals = true }: InvitationProps) {
+export default function Invitation({ t, petals = true, bgmUrl }: InvitationProps) {
   const [intvOpen, setIntvOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
 
@@ -40,7 +41,7 @@ export default function Invitation({ t, petals = true }: InvitationProps) {
       }}
     >
       {petals && <PetalShower count={20} />}
-      <MusicToggle t={t} />
+      <MusicToggle t={t} bgmUrl={bgmUrl} />
 
       <Cover t={t} />
       <Family t={t} onContact={() => setContactOpen(true)} />

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { THEMES, FONT_SETS } from '@/lib/wedding-data';
+import { THEMES, FONT_SETS, WEDDING } from '@/lib/wedding-data';
+import { getStorageUrl } from '@/lib/supabase';
 import type { Theme } from '@/lib/utils';
 import Invitation from '@/components/Invitation';
 
@@ -27,7 +28,7 @@ export default function Home() {
     return (
         <>
             <div className="canvas">
-                <Invitation t={theme} petals={cfg.petals} />
+                <Invitation t={theme} petals={cfg.petals} bgmUrl={WEDDING.storage.bgm ? getStorageUrl(WEDDING.storage.bgmBucket, WEDDING.storage.bgm) : ''} />
             </div>
         </>
     );

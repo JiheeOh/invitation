@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Nanum_Myeongjo, Noto_Serif_KR, Noto_Sans_KR } from 'next/font/google';
-import Script from 'next/script';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import KakaoInit from '@/components/KakaoInit';
 import 'leaflet/dist/leaflet.css';
 
 const cormorant = Cormorant_Garamond({
@@ -52,12 +52,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`h-full ${cormorant.variable} ${nanumMyeongjo.variable} ${notoSerifKr.variable} ${notoSansKr.variable}`}>
       <body style={{ margin: 0, padding: 0, height: '100%' }}>
-        <Script
-          src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
-          integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        <KakaoInit />
         <ThemeProvider>
           {children}
         </ThemeProvider>

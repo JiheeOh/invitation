@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
 import Ornament from '../Ornament';
@@ -14,12 +14,6 @@ interface ShareProps {
 }
 
 export default function Share({ t }: ShareProps) {
-  useEffect(() => {
-    const kakao = window.Kakao;
-    if (kakao && !kakao.isInitialized()) {
-      kakao.init(process.env.NEXT_PUBLIC_KAKAO_APP_KEY!);
-    }
-  }, []);
 
   const handleKakaoShare = () => {
     if (typeof window !== 'undefined' && window.Kakao?.Share) {

@@ -62,7 +62,9 @@
       "Bash(gh auth *)",
       "Bash(chmod +x *)",
       "WebFetch(domain:guide.ncloud-docs.com)",
-      "WebFetch(domain:www.hotels.com)"
+      "WebFetch(domain:www.hotels.com)",
+      "Bash(xargs ls -la)",
+      "Bash(npx vitest *)"
     ]
   }
 }

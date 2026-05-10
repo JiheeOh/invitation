@@ -1,14 +1,65 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { Theme } from '@/lib/utils';
 
 interface MusicToggleProps {
   t: Theme;
+  bgmUrl?: string;
 }
 
-export default function MusicToggle({ t }: MusicToggleProps) {
+export default function MusicToggle({ t, bgmUrl }: MusicToggleProps) {
   const [on, setOn] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasSetupRef = useRef(false);
+
+  useEffect(() => {
+    if (!bgmUrl) return;
+
+    // Audio 객체 생성
+    const audio = new Audio(bgmUrl);
+    audio.loop = true;
+    audio.volume = 0.3;
+    audioRef.current = audio;
+    hasSetupRef.current = true;
+
+    // 페이지 로드 시 자동재생 시도
+    const autoPlayPromise = audio.play().catch(() => {
+      // 브라우저가 차단했을 가능성 높음, 첫 사용자 인터랙션 대기
+    });
+
+    // 첫 사용자 인터랙션 시 음악 재생
+    const handleUserInteraction = () => {
+      if (audioRef.current && !on) {
+        setOn(true);
+      }
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+    };
+
+    document.addEventListener('click', handleUserInteraction, { once: true });
+    document.addEventListener('touchstart', handleUserInteraction, { once: true });
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+    };
+  }, [bgmUrl]);
+
+  // on/off 토글 시 play/pause
+  useEffect(() => {
+    if (!audioRef.current || !bgmUrl) return;
+    if (on) {
+      audioRef.current.play().catch(() => {
+        // 자동재생 차단, 무시
+      });
+    } else {
+      audioRef.current.pause();
+    }
+  }, [on, bgmUrl]);
 
   return (
     <button
