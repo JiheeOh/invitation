@@ -65,7 +65,9 @@
       "WebFetch(domain:www.hotels.com)",
       "Bash(xargs ls -la)",
       "Bash(npx vitest *)",
-      "Bash(grep -E '\\\\.\\(tsx|ts|css|scss\\)$')"
+      "Bash(grep -E '\\\\.\\(tsx|ts|css|scss\\)$')",
+      "Bash(kill 73262 73291 73309 73485)",
+      "Bash(kill 28076)"
     ]
   }
 }

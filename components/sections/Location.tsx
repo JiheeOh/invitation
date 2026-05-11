@@ -71,6 +71,10 @@ const TransportRow = ({
               fontSize: 12,
               color: t.muted,
               lineHeight: 1.6,
+              marginTop:
+                (kind === 'subway' && i > 0 && i % 2 === 0) ? 8 :
+                (kind === 'bus' && l.startsWith('[') && i > 0) ? 12 :
+                0,
             }}
           >
             {l}

@@ -88,7 +88,7 @@ const Group = ({ id, title, color, items, open, setOpen, t }: GroupProps) => {
                 <div style={{ fontSize: 13, fontFamily: t.serif, color: t.ink }}>
                   {item.bank} {item.num}
                 </div>
-                <CopyBtn text={item.num} label="복사" theme={t} />
+                <CopyBtn text={`${item.bank} ${item.num}`} label="복사" theme={t} />
               </div>
             </div>
           ))}
