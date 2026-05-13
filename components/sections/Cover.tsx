@@ -17,14 +17,15 @@ export default function Cover({ t }: CoverProps) {
     <>
       <section
         onContextMenu={(e) => e.preventDefault()}
-        onSelectStart={(e) => e.preventDefault()}
         onCopy={(e) => e.preventDefault()}
+        {...({onSelectStart: (e: any) => e.preventDefault()} as any)}
         style={{
           position: 'relative',
           height: 'min(720px, calc(100svh - 80px))',
           overflow: 'hidden',
           background: '#F5F5F5',
           zIndex: 2,
+          userSelect: 'none',
         }}
       >
         {coverUrl && (
