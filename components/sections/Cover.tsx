@@ -16,6 +16,7 @@ export default function Cover({ t }: CoverProps) {
   return (
     <>
       <section
+        onContextMenu={(e) => e.preventDefault()}
         style={{
           position: 'relative',
           height: 'min(720px, calc(100svh - 80px))',

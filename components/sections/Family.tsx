@@ -89,7 +89,7 @@ export default function Family({ t, onContact }: FamilyProps) {
                 }}
             >
                     {People.map((p, i) => (
-                        <div key={i} style={{ position: 'relative', aspectRatio: '1/1', overflow: 'hidden' }}>
+                        <div key={i} data-testid="family-portrait-container" onContextMenu={(e) => e.preventDefault()} style={{ position: 'relative', aspectRatio: '1/1', overflow: 'hidden' }}>
                             {p.photo ? (
                                 <Image
                                     src={p.photo}

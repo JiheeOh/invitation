@@ -291,6 +291,12 @@ export async function GET() {
 
 ## Git Workflow
 
+### ⚠️ Git 커밋 및 푸시 규칙 (필수)
+- **`git commit`과 `git push`는 사용자가 명시적으로 지시할 때만 실행**
+- 코드 변경 후에도 자동으로 커밋/푸시 금지
+- 사용자가 변경사항을 검토한 후 "git push해줘" 또는 "커밋해줘" 등의 명령이 있을 때만 실행
+- 변경사항은 언제든 `git status`로 확인 가능하도록 그대로 둘 것
+
 ### 커밋 전 체크리스트
 - [ ] `npm run lint` 통과
 - [ ] `npm test` 통과 (테스트 추가 시)

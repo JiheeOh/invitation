@@ -94,6 +94,7 @@ export default function Gallery({ t }: GalleryProps) {
               <div
                 key={photo}
                 onClick={() => setLightbox(i)}
+                onContextMenu={(e) => e.preventDefault()}
                 style={{
                   cursor: 'pointer',
                   position: 'relative',
@@ -142,6 +143,7 @@ export default function Gallery({ t }: GalleryProps) {
           onClick={() => {
             if (!swipedRef.current) setLightbox(null);
           }}
+          onContextMenu={(e) => e.preventDefault()}
           onTouchStart={(e) => {
             setTouchStartX(e.touches[0].clientX);
             swipedRef.current = false;
