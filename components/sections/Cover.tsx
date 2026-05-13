@@ -18,7 +18,7 @@ export default function Cover({ t }: CoverProps) {
       <section
         style={{
           position: 'relative',
-          height: 'min(720px, calc(100dvh - 80px))',
+          height: 'min(720px, calc(100svh - 80px))',
           overflow: 'hidden',
           background: '#F5F5F5',
           zIndex: 2,
