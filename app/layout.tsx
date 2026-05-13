@@ -35,6 +35,12 @@ const notoSansKr = Noto_Sans_KR({
 export const metadata: Metadata = {
   title: '모바일 청첩장 · 허재 ♡ 오지희',
   description: '2026년 8월 29일 토요일 오후 2시 20분',
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
+  },
 };
 
 export const viewport: Viewport = {
