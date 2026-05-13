@@ -22,13 +22,16 @@ export default function Closing({ t }: ClosingProps) {
       <FadeIn>
         <div onContextMenu={(e) => e.preventDefault()} style={{ position: 'relative', height: 'min(720px, calc(100svh - 80px))', background: '#F5F5F5' }}>
           {closingUrl && (
-            <Image
-              src={closingUrl}
-              alt="closing"
-              fill
-              sizes="100vw"
-              style={{ objectFit: 'contain' }}
-            />
+            <>
+              <Image
+                src={closingUrl}
+                alt="closing"
+                fill
+                sizes="100vw"
+                style={{ objectFit: 'contain' }}
+              />
+              <div style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
+            </>
           )}
         </div>
         <div

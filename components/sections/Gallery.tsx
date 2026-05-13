@@ -113,6 +113,7 @@ export default function Gallery({ t }: GalleryProps) {
                   sizes="33vw"
                   style={{ objectFit: 'contain' }}
                 />
+                <div style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
               </div>
             ))}
           </div>
@@ -170,18 +171,22 @@ export default function Gallery({ t }: GalleryProps) {
             userSelect: 'none',
           }}
         >
-          <Image
-            src={photos[lightbox]}
-            alt={`Photo ${lightbox + 1}`}
-            fill
-            quality={90}
-            sizes="100vw"
-            style={{
-              objectFit: 'contain',
-              width: '100%',
-              height: '100%',
-            }}
-          />
+          <>
+            <Image
+              src={photos[lightbox]}
+              alt={`Photo ${lightbox + 1}`}
+              fill
+              quality={90}
+              sizes="100vw"
+              style={{
+                objectFit: 'contain',
+                width: '100%',
+                height: '100%',
+              }}
+            />
+            <div style={{ position: 'absolute', inset: 0, zIndex: 100 }} />
+          </>
+
           <button
             onClick={(e) => {
               e.stopPropagation();

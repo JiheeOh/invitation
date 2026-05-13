@@ -91,13 +91,16 @@ export default function Family({ t, onContact }: FamilyProps) {
                     {People.map((p, i) => (
                         <div key={i} data-testid="family-portrait-container" onContextMenu={(e) => e.preventDefault()} style={{ position: 'relative', aspectRatio: '1/1', overflow: 'hidden' }}>
                             {p.photo ? (
-                                <Image
-                                    src={p.photo}
-                                    alt={p.person.name}
-                                    fill
-                                    sizes="50vw"
-                                    style={{ objectFit: 'contain' }}
-                                />
+                                <>
+                                    <Image
+                                        src={p.photo}
+                                        alt={p.person.name}
+                                        fill
+                                        sizes="50vw"
+                                        style={{ objectFit: 'contain' }}
+                                    />
+                                    <div style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
+                                </>
                             ) : (
                                 <div
                                     style={{

@@ -26,14 +26,17 @@ export default function Cover({ t }: CoverProps) {
         }}
       >
         {coverUrl && (
-          <Image
-            src={coverUrl}
-            alt="cover"
-            fill
-            priority
-            sizes="100vw"
-            style={{ objectFit: 'contain' }}
-          />
+          <>
+            <Image
+              src={coverUrl}
+              alt="cover"
+              fill
+              priority
+              sizes="100vw"
+              style={{ objectFit: 'contain' }}
+            />
+            <div style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
+          </>
         )}
       </section>
       <div
