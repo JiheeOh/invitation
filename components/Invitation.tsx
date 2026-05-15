@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Theme } from '@/lib/utils';
 import Cover from './sections/Cover';
 import Family, { ContactsModalContent } from './sections/Family';
@@ -24,6 +24,19 @@ interface InvitationProps {
 export default function Invitation({ t, petals = true, bgmUrl }: InvitationProps) {
   const [intvOpen, setIntvOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+
+  useEffect(() => {
+    const setStableVh = () => {
+      document.documentElement.style.setProperty(
+        '--stable-svh-100',
+        `${window.innerHeight}px`
+      );
+    };
+    setStableVh();
+    const onOrientationChange = () => setTimeout(setStableVh, 200);
+    window.addEventListener('orientationchange', onOrientationChange);
+    return () => window.removeEventListener('orientationchange', onOrientationChange);
+  }, []);
 
   return (
     <div

@@ -21,7 +21,7 @@ export default function Cover({ t }: CoverProps) {
         {...({onSelectStart: (e: any) => e.preventDefault()} as any)}
         style={{
           position: 'relative',
-          height: 'min(720px, calc(100svh - 80px))',
+          height: 'min(720px, calc(var(--stable-svh-100, 100svh) - 80px))',
           overflow: 'hidden',
           background: '#F5F5F5',
           zIndex: 2,
