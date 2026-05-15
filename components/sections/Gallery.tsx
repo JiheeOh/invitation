@@ -212,9 +212,6 @@ export default function Gallery({ t }: GalleryProps) {
                 zIndex: 2,
                 opacity: fgVisible ? 1 : 0,
               }}
-              onTransitionEnd={() => {
-                if (fgVisible) setActiveIdx(lightbox);
-              }}
             >
               <Image
                 key={`fg-${lightbox}`}
@@ -224,7 +221,7 @@ export default function Gallery({ t }: GalleryProps) {
                 quality={90}
                 sizes="100vw"
                 priority
-                onLoad={() => requestAnimationFrame(() => setFgVisible(true))}
+                onLoad={() => requestAnimationFrame(() => { setFgVisible(true); setActiveIdx(lightbox!); })}
                 style={{
                   objectFit: 'contain',
                   width: '100%',
