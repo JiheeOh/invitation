@@ -217,7 +217,7 @@ export default function Gallery({ t }: GalleryProps) {
                 quality={90}
                 sizes="100vw"
                 priority
-                onLoad={() => setActiveIdx(lightbox)}
+                onLoad={() => requestAnimationFrame(() => setActiveIdx(lightbox))}
                 style={{
                   objectFit: 'contain',
                   width: '100%',
