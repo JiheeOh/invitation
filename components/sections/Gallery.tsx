@@ -104,7 +104,7 @@ export default function Gallery({ t }: GalleryProps) {
             {visiblePhotos.map((photo, i) => (
               <div
                 key={photo}
-                onClick={() => setLightbox(i)}
+                onClick={() => { setActiveIdx(i); setLightbox(i); }}
                 onContextMenu={(e) => e.preventDefault()}
                 onCopy={(e) => e.preventDefault()}
                 {...({onSelectStart: (e: any) => e.preventDefault()} as any)}
@@ -188,7 +188,7 @@ export default function Gallery({ t }: GalleryProps) {
           }}
         >
           <>
-            {activeIdx !== null && activeIdx !== lightbox && (
+            {activeIdx !== null && (
               <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
                 <Image
                   key={`bg-${activeIdx}`}
@@ -211,7 +211,6 @@ export default function Gallery({ t }: GalleryProps) {
                 inset: 0,
                 zIndex: 2,
                 opacity: fgVisible ? 1 : 0,
-                transition: fgVisible ? 'opacity 300ms ease' : 'none',
               }}
               onTransitionEnd={() => {
                 if (fgVisible) setActiveIdx(lightbox);
