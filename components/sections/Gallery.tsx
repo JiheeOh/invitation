@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import Image from 'next/image';
 import FadeIn from '../FadeIn';
 import SectionLabel from '../SectionLabel';
@@ -15,6 +15,7 @@ const PAGE_SIZE = 9;
 export default function Gallery({ t }: GalleryProps) {
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [fgVisible, setFgVisible] = useState(false);
   const [photos, setPhotos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -56,6 +57,10 @@ export default function Gallery({ t }: GalleryProps) {
     setLightbox(null);
     setActiveIdx(null);
   };
+
+  useLayoutEffect(() => {
+    setFgVisible(false);
+  }, [lightbox]);
 
   useEffect(() => {
     if (lightbox === null) return;
@@ -205,8 +210,11 @@ export default function Gallery({ t }: GalleryProps) {
                 position: 'absolute',
                 inset: 0,
                 zIndex: 2,
-                opacity: activeIdx === lightbox ? 1 : 0,
-                transition: 'opacity 300ms ease',
+                opacity: fgVisible ? 1 : 0,
+                transition: fgVisible ? 'opacity 300ms ease' : 'none',
+              }}
+              onTransitionEnd={() => {
+                if (fgVisible) setActiveIdx(lightbox);
               }}
             >
               <Image
@@ -217,7 +225,7 @@ export default function Gallery({ t }: GalleryProps) {
                 quality={90}
                 sizes="100vw"
                 priority
-                onLoad={() => requestAnimationFrame(() => setActiveIdx(lightbox))}
+                onLoad={() => requestAnimationFrame(() => setFgVisible(true))}
                 style={{
                   objectFit: 'contain',
                   width: '100%',
