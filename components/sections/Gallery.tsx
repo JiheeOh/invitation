@@ -14,6 +14,7 @@ const PAGE_SIZE = 9;
 
 export default function Gallery({ t }: GalleryProps) {
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -51,12 +52,17 @@ export default function Gallery({ t }: GalleryProps) {
     setLightbox((n) => (n! + 1) % photos.length);
   };
 
+  const closeLightbox = () => {
+    setLightbox(null);
+    setActiveIdx(null);
+  };
+
   useEffect(() => {
     if (lightbox === null) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') goPrev();
       else if (e.key === 'ArrowRight') goNext();
-      else if (e.key === 'Escape') setLightbox(null);
+      else if (e.key === 'Escape') closeLightbox();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -145,7 +151,7 @@ export default function Gallery({ t }: GalleryProps) {
       {lightbox !== null && (
         <div
           onClick={() => {
-            if (!swipedRef.current) setLightbox(null);
+            if (!swipedRef.current) closeLightbox();
           }}
           onContextMenu={(e) => e.preventDefault()}
           onCopy={(e) => e.preventDefault()}
@@ -177,18 +183,48 @@ export default function Gallery({ t }: GalleryProps) {
           }}
         >
           <>
-            <Image
-              src={photos[lightbox]}
-              alt={`Photo ${lightbox + 1}`}
-              fill
-              quality={90}
-              sizes="100vw"
+            {activeIdx !== null && activeIdx !== lightbox && (
+              <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+                <Image
+                  key={`bg-${activeIdx}`}
+                  src={photos[activeIdx]}
+                  alt={`Photo ${activeIdx + 1}`}
+                  fill
+                  quality={90}
+                  sizes="100vw"
+                  style={{
+                    objectFit: 'contain',
+                    width: '100%',
+                    height: '100%',
+                  }}
+                />
+              </div>
+            )}
+            <div
               style={{
-                objectFit: 'contain',
-                width: '100%',
-                height: '100%',
+                position: 'absolute',
+                inset: 0,
+                zIndex: 2,
+                opacity: activeIdx === lightbox ? 1 : 0,
+                transition: 'opacity 300ms ease',
               }}
-            />
+            >
+              <Image
+                key={`fg-${lightbox}`}
+                src={photos[lightbox]}
+                alt={`Photo ${lightbox + 1}`}
+                fill
+                quality={90}
+                sizes="100vw"
+                priority
+                onLoad={() => setActiveIdx(lightbox)}
+                style={{
+                  objectFit: 'contain',
+                  width: '100%',
+                  height: '100%',
+                }}
+              />
+            </div>
             <div style={{ position: 'absolute', inset: 0, zIndex: 100 }} />
           </>
 
@@ -247,7 +283,7 @@ export default function Gallery({ t }: GalleryProps) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setLightbox(null);
+              closeLightbox();
             }}
             style={{
               position: 'absolute',
