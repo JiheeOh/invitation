@@ -20,7 +20,7 @@ export default function Closing({ t }: ClosingProps) {
   return (
     <section style={{ padding: '40px 0 0', background: '#fff', color: t.ink, position: 'relative', zIndex: 2 }}>
       <FadeIn>
-        <div onContextMenu={(e) => e.preventDefault()} onCopy={(e) => e.preventDefault()} {...({onSelectStart: (e: any) => e.preventDefault()} as any)} style={{ position: 'relative', height: 'min(720px, calc(var(--stable-svh-100, 100svh) - 80px))', background: '#F5F5F5', userSelect: 'none' }}>
+        <div onContextMenu={(e) => e.preventDefault()} onCopy={(e) => e.preventDefault()} style={{ position: 'relative', height: 'min(720px, calc(var(--stable-svh-100, 100svh) - 80px))', background: '#F5F5F5', userSelect: 'none' }}>
           {closingUrl && (
             <>
               <Image

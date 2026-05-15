@@ -18,7 +18,6 @@ export default function Cover({ t }: CoverProps) {
       <section
         onContextMenu={(e) => e.preventDefault()}
         onCopy={(e) => e.preventDefault()}
-        {...({onSelectStart: (e: any) => e.preventDefault()} as any)}
         style={{
           position: 'relative',
           height: 'min(720px, calc(var(--stable-svh-100, 100svh) - 80px))',

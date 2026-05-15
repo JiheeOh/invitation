@@ -107,7 +107,6 @@ export default function Gallery({ t }: GalleryProps) {
                 onClick={() => { setActiveIdx(i); setLightbox(i); }}
                 onContextMenu={(e) => e.preventDefault()}
                 onCopy={(e) => e.preventDefault()}
-                {...({onSelectStart: (e: any) => e.preventDefault()} as any)}
                 style={{
                   cursor: 'pointer',
                   position: 'relative',
@@ -160,7 +159,6 @@ export default function Gallery({ t }: GalleryProps) {
           }}
           onContextMenu={(e) => e.preventDefault()}
           onCopy={(e) => e.preventDefault()}
-          {...({onSelectStart: (e: any) => e.preventDefault()} as any)}
           onTouchStart={(e) => {
             setTouchStartX(e.touches[0].clientX);
             swipedRef.current = false;
