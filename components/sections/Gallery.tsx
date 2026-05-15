@@ -213,6 +213,7 @@ export default function Gallery({ t }: GalleryProps) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              zIndex: 110,
             }}
           >
             ‹
@@ -238,6 +239,7 @@ export default function Gallery({ t }: GalleryProps) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              zIndex: 110,
             }}
           >
             ›
@@ -259,6 +261,7 @@ export default function Gallery({ t }: GalleryProps) {
               border: 'none',
               cursor: 'pointer',
               fontSize: 18,
+              zIndex: 110,
             }}
           >
             ✕
