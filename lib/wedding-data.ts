@@ -23,11 +23,11 @@ export const WEDDING = {
         wish: '',
     },
 
-    dateISO: '2026-08-29T14:20:00+09:00',
+    dateISO: '2026-08-29T14:30:00+09:00',
     dateLabel: '2026년 8월 29일 토요일',
-    timeLabel: '오후 2시 20분',
+    timeLabel: '오후 2시 30분',
     coverDate: '2026. 08. 29. SAT',
-    coverTime: '2:20 PM',
+    coverTime: '2:30 PM',
 
     venue: '더링크서울 트리뷰트 포트폴리오 호텔 웨딩',
     hall: '7층 화이트홀',
