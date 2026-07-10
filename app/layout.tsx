@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Nanum_Myeongjo, Noto_Serif_KR, Noto_Sans_KR } from 'next/font/google';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import KakaoInit from '@/components/KakaoInit';
+import { Analytics } from '@vercel/analytics/next';
 import 'leaflet/dist/leaflet.css';
 
 const cormorant = Cormorant_Garamond({
@@ -62,6 +63,7 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
